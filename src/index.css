@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+
+/* index.css mein */
+.bg-mahadev {
+  background-color: #31004A;
+}
+
+.text-mahadev {
+  color: #31004A;
+}
