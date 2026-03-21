@@ -1,101 +1,171 @@
-import React, { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { FaMobileAlt, FaGift } from "react-icons/fa";
 import { IoMdPersonAdd, IoMdContact } from "react-icons/io";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import SummaryApi from '../common/SummerAPI';
+import Axios from '../utils/axios';
 
 export const Sign = () => {
     const navigate = useNavigate();
-    const mobileRef = useRef(null);
-    const nameRef = useRef(null);
-    const passRef = useRef(null);
-    const refCodeRef = useRef(null);
+
+    const [formData, setFormData] = useState({
+        mobile: '',
+        name: '',
+        pass: '',
+        refCode: ''
+    });
+
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+
+        if (!formData.mobile || !formData.name || !formData.pass) {
+            alert("Mobile, Name aur Password daalna zaroori hai!");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const res = await Axios({
+                url: SummaryApi.creatUser.url,
+                method: SummaryApi.creatUser.method,
+                data: formData
+            });
+
+            alert(res.data?.message || "Account created successfully!");
+            navigate('/Login');
+        } catch (error) {
+            console.error("Signup error:", error);
+            alert(error?.response?.data?.message || "Sign up failed!");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div className='bg-mahadev min-h-screen flex flex-col justify-end items-center'>
-            <div className='bg-white rounded-t-[40px] shadow-2xl w-full max-w-md p-10 pt-20 pb-10 flex flex-col items-center'>
+        // ✨ h-screen aur overflow-hidden laga diya taaki scroller na aaye
+        <div className='bg-mahadev bg-cover bg-center h-screen overflow-hidden flex items-center justify-center p-4'>
+            
+            {/* ✨ Padding aur width ko compact kiya hai */}
+            <div className='bg-white/95 backdrop-blur-xl rounded-[2rem] shadow-2xl w-full max-w-md p-6 relative border border-white/40 transform transition-all hover:shadow-3xl'>
+                
+                {/* Back Button - Thoda chota aur upar set kiya */}
+                <button 
+                    onClick={() => navigate('/Login')} 
+                    className='absolute top-5 left-5 bg-gray-100/80 hover:bg-gray-200 text-[#31004A] w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 shadow-sm hover:shadow active:scale-90 z-10'
+                >
+                    <IoIosArrowRoundBack size={26} />
+                </button>
 
-                <div onClick={()=> navigate('/Login')} className='absolute top-40 left-145 bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors'>
-                    <IoIosArrowRoundBack size={30} />
+                {/* Header - Margin kam kiya */}
+                <div className='mt-2 mb-6 text-center'>
+                    <h2 className='text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-[#2D144B] to-[#7f29c4] tracking-tight mb-1'>
+                        Join Us Today
+                    </h2>
+                    <p className='text-gray-500 font-medium text-xs sm:text-sm'>
+                        Create an account to get started
+                    </p>
                 </div>
 
-                <div className='m-5'>
-                    <div className='text-[#2D144B] font-black text-xl mb-8 tracking-tight text-center'>
-                        <h2>CREATE YOUR ACCOUNT</h2>
-                    </div>
-                </div>
-
-                <div className='w-full space-y-4'>
-
-                    <div
-                        onClick={() => mobileRef.current.focus()}
-                        className='bg-gray-100 border border-gray-200 rounded-2xl flex items-center h-16 px-3 cursor-text hover:bg-gray-200 transition-colors'
-                    >
-                        <div className='bg-[#31004A] text-white p-3 rounded-xl flex items-center justify-center'>
-                            <FaMobileAlt size={22} />
+                {/* Form Tag - Spacing kam karke space-y-3 kiya */}
+                <form onSubmit={handleSignUp} className='w-full space-y-3.5'>
+                    
+                    {/* Mobile Input */}
+                    <div className='group flex items-center bg-gray-50 rounded-xl border border-gray-200 focus-within:border-[#31004A] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#31004A]/10 transition-all duration-300 p-1'>
+                        <div className='bg-gradient-to-br from-[#31004A] to-[#51167a] text-white w-10 h-10 rounded-lg flex items-center justify-center shadow-md transform group-focus-within:scale-105 transition-transform shrink-0'>
+                            <FaMobileAlt size={18} />
                         </div>
                         <input
                             type="tel"
-                            ref={mobileRef}
-                            className='bg-transparent focus:outline-none w-full h-full px-4 font-bold text-gray-700 placeholder-gray-400'
-                            placeholder='MOBILE NUMBER'
+                            name="mobile"
+                            value={formData.mobile}
+                            onChange={handleChange}
+                            className='bg-transparent border-none focus:outline-none w-full px-3 text-sm font-semibold text-gray-800 placeholder-gray-400'
+                            placeholder='Mobile Number'
+                            required
                         />
                     </div>
 
-                    <div
-                        onClick={() => nameRef.current.focus()}
-                        className='bg-gray-100 border border-gray-200 rounded-2xl flex items-center h-16 px-3 cursor-text hover:bg-gray-200 transition-colors'
-                    >
-                        <div className='bg-[#31004A] text-white p-3 rounded-xl flex items-center justify-center'>
-                            <IoMdContact size={22} />
+                    {/* Name Input */}
+                    <div className='group flex items-center bg-gray-50 rounded-xl border border-gray-200 focus-within:border-[#31004A] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#31004A]/10 transition-all duration-300 p-1'>
+                        <div className='bg-gradient-to-br from-[#31004A] to-[#51167a] text-white w-10 h-10 rounded-lg flex items-center justify-center shadow-md transform group-focus-within:scale-105 transition-transform shrink-0'>
+                            <IoMdContact size={20} />
                         </div>
                         <input
                             type="text"
-                            ref={nameRef}
-                            className='bg-transparent focus:outline-none w-full h-full px-4 font-bold text-gray-700 placeholder-gray-400'
-                            placeholder='FULL NAME'
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className='bg-transparent border-none focus:outline-none w-full px-3 text-sm font-semibold text-gray-800 placeholder-gray-400'
+                            placeholder='Full Name'
+                            required
                         />
                     </div>
 
-                    <div
-                        onClick={() => passRef.current.focus()}
-                        className='bg-gray-100 border border-gray-200 rounded-2xl flex items-center h-16 px-3 cursor-text hover:bg-gray-200 transition-colors'
-                    >
-                        <div className='bg-[#31004A] text-white p-3 rounded-xl flex items-center justify-center'>
-                            <RiLockPasswordFill size={22} />
+                    {/* Password Input */}
+                    <div className='group flex items-center bg-gray-50 rounded-xl border border-gray-200 focus-within:border-[#31004A] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#31004A]/10 transition-all duration-300 p-1'>
+                        <div className='bg-gradient-to-br from-[#31004A] to-[#51167a] text-white w-10 h-10 rounded-lg flex items-center justify-center shadow-md transform group-focus-within:scale-105 transition-transform shrink-0'>
+                            <RiLockPasswordFill size={18} />
                         </div>
                         <input
                             type="password"
-                            ref={passRef}
-                            className='bg-transparent focus:outline-none w-full h-full px-4 font-bold text-gray-700 placeholder-gray-400'
-                            placeholder='PASSWORD'
+                            name="pass"
+                            value={formData.pass}
+                            onChange={handleChange}
+                            className='bg-transparent border-none focus:outline-none w-full px-3 text-sm font-semibold text-gray-800 placeholder-gray-400'
+                            placeholder='Password'
+                            required
                         />
                     </div>
 
-                    <div
-                        onClick={() => refCodeRef.current.focus()}
-                        className='bg-gray-100 border border-gray-200 rounded-2xl flex items-center h-16 px-3 cursor-text hover:bg-gray-200 transition-colors'
-                    >
-                        <div className='bg-[#31004A] text-white p-3 rounded-xl flex items-center justify-center'>
-                            <FaGift size={22} />
+                    {/* Referral Input */}
+                    <div className='group flex items-center bg-gray-50 rounded-xl border border-gray-200 focus-within:border-[#31004A] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#31004A]/10 transition-all duration-300 p-1'>
+                        <div className='bg-gray-800 text-white w-10 h-10 rounded-lg flex items-center justify-center shadow-md transform group-focus-within:scale-105 transition-transform shrink-0'>
+                            <FaGift size={18} />
                         </div>
                         <input
                             type="text"
-                            ref={refCodeRef}
-                            className='bg-transparent focus:outline-none w-full h-full px-4 font-bold text-gray-700 placeholder-gray-400'
-                            placeholder='REFERRAL CODE (OPTIONAL)'
+                            name="refCode"
+                            value={formData.refCode}
+                            onChange={handleChange}
+                            className='bg-transparent border-none focus:outline-none w-full px-3 text-sm font-semibold text-gray-800 placeholder-gray-400'
+                            placeholder='Referral Code (Optional)'
                         />
                     </div>
 
-                    <button className='bg-[#31004A] text-white w-full h-16 rounded-2xl flex items-center justify-center active:scale-95 transition-all shadow-lg hover:opacity-90 mt-6'>
-                        <div className='flex items-center gap-2'>
-                            <IoMdPersonAdd size={26} />
-                            <p className='font-bold text-xl tracking-wide'>SIGN UP</p>
-                        </div>
+                    {/* Submit Button - Height thodi kam ki (h-12) */}
+                    <button 
+                        type="submit"
+                        disabled={loading}
+                        className='w-full h-12 mt-4 rounded-xl bg-gradient-to-r from-[#31004A] to-[#601a91] text-white font-bold text-base tracking-wide flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-300 ease-out disabled:opacity-70 disabled:cursor-not-allowed'
+                    >
+                        <IoMdPersonAdd size={20} />
+                        <span>{loading ? 'CREATING...' : 'CREATE ACCOUNT'}</span>
                     </button>
+                    
+                </form>
+                
+                {/* Login Link - Margin top kam kiya */}
+                <div className='mt-5 text-center'>
+                    <p className='text-gray-500 font-medium text-sm'>
+                        Already have an account?{' '}
+                        <Link to="/Login" className='text-[#31004A] font-extrabold hover:text-[#601a91] hover:underline decoration-2 underline-offset-4 transition-colors'>
+                            Log In
+                        </Link>
+                    </p>
                 </div>
-
+                
             </div>
         </div>
     );

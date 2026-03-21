@@ -12,6 +12,7 @@ import { CiLogin } from "react-icons/ci";
 import { MdRoundaboutRight } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { ImNotification } from "react-icons/im";
+import { useSelector } from 'react-redux';
 
 // 1. Yahan 'closeSidebar' prop receive karein
 export const Sidebar = ({ closeSidebar }) => {
@@ -33,6 +34,7 @@ export const Sidebar = ({ closeSidebar }) => {
     { icons: FaShareAlt, itemsDetails: "Refer & Earn", link: "refer" },
     { icons: CiLogin, itemsDetails: "Logout", link: "#" },
   ];
+  const balance = useSelector((state) => state.user.walletBalance);
 
   return (
     <div className='h-screen w-64 md:w-72 bg-white flex flex-col border-r border-gray-200 shadow-2xl'>
@@ -45,12 +47,13 @@ export const Sidebar = ({ closeSidebar }) => {
           <h2 className='font-bold text-lg tracking-wider mb-1'>USER NAME</h2>
           <div className='flex justify-center items-center gap-2 px-4 py-1'>
             <FaWallet size={14} />
-            <p>Balance: ₹ 5</p>
+            <p>Balance: ₹ {balance}</p>
           </div>
         </div>
       </div>
 
-      <div className='flex-1 overflow-y-auto py-2 custom-scrollbar'>
+      {/* Yahan scrollbar hide karne ki classes add ki hain */}
+      <div className='flex-1 overflow-y-auto py-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
         {items.map((item, index) => (
           <Link 
             key={index} 

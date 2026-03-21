@@ -5,7 +5,8 @@ import { FaHistory, FaTrophy, FaStar, FaClipboardList } from "react-icons/fa";
 
 export const BidPage = () => {
     const navigate = useNavigate();
-
+    
+   
     return (
         <div className="min-h-screen bg-gray-50 pb-10 font-sans">
             
