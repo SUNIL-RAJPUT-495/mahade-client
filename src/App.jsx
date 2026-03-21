@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes, Router } from "react-router-dom"
 import { Sign } from "./pages/Sign"
-import { Login } from "./pages/login"
+import {Login} from "./pages/Login"
 import MainLayerOut from "./layerout/MainLayerOut"
 import Profile from "./pages/userDeshbord/Profile"
 import GamerRatesPage from "./pages/userDeshbord/GamerRatesPage"
