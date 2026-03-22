@@ -109,7 +109,10 @@ const GamePlay = () => {
           {gameTypesList.map((type) => (
             <button
               key={type}
-              onClick={() => setGameType(type)}
+              onClick={() => {
+                setGameType(type);
+                setBetNumber('');
+              }}
               className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${gameType === type
                   ? 'bg-mahadev text-white shadow-md'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -157,9 +160,10 @@ const GamePlay = () => {
                 type="text" // Change to text for regex control
                 inputMode="numeric"
                 value={betNumber}
+                maxLength={1}
                 onKeyDown={blockInvalidChar}
                 onChange={handleBetNumberChange}
-                placeholder={gameType === 'Single' ? 'e.g., 5' : gameType === 'Jodi' ? 'e.g., 45' : 'e.g., 145'}
+                placeholder="e.g., 5"
                 className="w-full text-2xl font-black text-center border-2 border-gray-200 rounded-xl py-3 outline-none focus:border-mahadev focus:ring-4 focus:ring-blue-100 transition-all placeholder:text-gray-300 placeholder:font-normal"
               />
             </div>

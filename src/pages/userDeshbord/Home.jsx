@@ -91,7 +91,7 @@ const Home = () => {
           </button>
           {/* Withdraw Button */}
           <button 
-            onClick={() => navigate('/withdraw')}
+            onClick={() => navigate('/withdrawal')}
             className="flex-1 bg-red-500 flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:bg-red-600 hover:shadow-lg hover:-translate-y-0.5 transition-all"
           >
             <BiMoneyWithdraw className="text-2xl" />
@@ -126,7 +126,7 @@ const Home = () => {
 
                 <h2 className='text-sm sm:text-xl font-black text-gray-800 mb-1 tracking-wide'>{game.name}</h2>
                 <p className='text-green-600 font-black text-xl sm:text-3xl tracking-widest mb-1 drop-shadow-sm'>
-                  ***-**-***
+                  {game.open_pana || '***'}-{game.jodi_result || '**'}-{game.close_pana || '***'}
                 </p>
 
                 <div className={`font-bold mb-4 sm:mb-6 tracking-wide text-xs sm:text-sm ${game.status !== 'Active' ? 'text-red-500' : 'text-green-500'}`}>

@@ -1,34 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  FiCalendar,
-  FiRefreshCw,
-  FiUsers,
-  FiDollarSign,
-  FiCreditCard,
-  FiActivity,
-  FiTrendingUp,
-  FiClock,
-  FiGift,
-  FiBarChart2,
-  FiDownload,
-  FiSearch,
-  FiFilter
+  FiCalendar, FiRefreshCw, FiUsers, FiDollarSign, FiCreditCard, FiActivity,
+  FiTrendingUp, FiClock, FiGift, FiBarChart2, FiDownload, FiSearch, FiFilter
 } from "react-icons/fi";
 import { BiMoneyWithdraw } from "react-icons/bi";
+import SummaryApi from '../../common/SummerAPI';
+import Axios from '../../utils/axios';
 
 export const AdminDashboard = () => {
-  // 1. Tab switch karne ke liye state banayi
   const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+  const [withdrawals, setWithdrawals] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      if (activeTab === 'overview') {
+        const res = await Axios({ url: SummaryApi.getAdminDashboardStats.url, method: SummaryApi.getAdminDashboardStats.method });
+        setStats(res.data.stats);
+      } else if (activeTab === 'users') {
+        const res = await Axios({ url: SummaryApi.getAllUsers.url, method: SummaryApi.getAllUsers.method });
+        setUsers(res.data.users);
+      } else if (activeTab === 'transactions') {
+        const res = await Axios({ url: SummaryApi.allTransactions.url, method: SummaryApi.allTransactions.method });
+        setTransactions(res.data.transactions);
+      } else if (activeTab === 'Withdrawal') {
+        const res = await Axios({ url: SummaryApi.getAllWithdrawals.url, method: SummaryApi.getAllWithdrawals.method });
+        setWithdrawals(res.data);
+      }
+    } catch (error) {
+      console.error("Dashboard Fetch Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [activeTab]);
 
   const statCards = [
-    { title: "TOTAL USERS", value: "0", subtitle: "↗ +0 today", subtitleColor: "text-green-500", headerColor: "bg-blue-600", iconBg: "bg-blue-100", iconColor: "text-blue-600", icon: FiUsers },
-    { title: "TOTAL DEPOSITS", value: "₹0", subtitle: "Total deposits", subtitleColor: "text-gray-500", headerColor: "bg-green-700", iconBg: "bg-green-100", iconColor: "text-green-700", icon: FiDownload },
-    { title: "TOTAL WITHDRAWALS", value: "₹0", subtitle: "Total withdrawals", subtitleColor: "text-gray-500", headerColor: "bg-purple-600", iconBg: "bg-purple-100", iconColor: "text-purple-600", icon: FiCreditCard },
-    { title: "TOTAL BETS", value: "₹0", subtitle: "Total game bets placed", subtitleColor: "text-gray-500", headerColor: "bg-blue-500", iconBg: "bg-cyan-100", iconColor: "text-cyan-500", icon: FiActivity },
-    { title: "TOTAL WINNINGS", value: "₹0", subtitle: "Total game winnings paid", subtitleColor: "text-gray-500", headerColor: "bg-green-500", iconBg: "bg-green-100", iconColor: "text-green-500", icon: FiTrendingUp },
-    { title: "ADMIN PROFIT/LOSS", value: "₹0", subtitle: "Profit for selected period", subtitleColor: "text-gray-500", headerColor: "bg-green-600", iconBg: "bg-green-100", iconColor: "text-green-600", icon: FiDollarSign },
-    { title: "PENDING WITHDRAWALS", value: "₹0", subtitle: "0 requests", subtitleColor: "text-orange-500", headerColor: "bg-orange-500", iconBg: "bg-orange-100", iconColor: "text-orange-500", icon: FiClock },
-    { title: "TOTAL BONUSES GIVEN", value: "₹0", subtitle: "Amount given as bonuses", subtitleColor: "text-gray-500", headerColor: "bg-pink-600", iconBg: "bg-pink-100", iconColor: "text-pink-600", icon: FiGift }
+    { title: "TOTAL USERS", value: stats?.totalUsers || "0", subtitle: "Registered profiles", subtitleColor: "text-green-500", headerColor: "bg-blue-600", iconBg: "bg-blue-100", iconColor: "text-blue-600", icon: FiUsers },
+    { title: "TOTAL DEPOSITS", value: `₹${stats?.totalDeposits || 0}`, subtitle: "Approved deposits", subtitleColor: "text-gray-500", headerColor: "bg-green-700", iconBg: "bg-green-100", iconColor: "text-green-700", icon: FiDownload },
+    { title: "TOTAL WITHDRAWALS", value: `₹${stats?.totalWithdrawals || 0}`, subtitle: "Approved payouts", subtitleColor: "text-gray-500", headerColor: "bg-purple-600", iconBg: "bg-purple-100", iconColor: "text-purple-600", icon: FiCreditCard },
+    { title: "TOTAL BETS", value: `₹${stats?.totalBets || 0}`, subtitle: "Total volume placed", subtitleColor: "text-gray-500", headerColor: "bg-blue-500", iconBg: "bg-cyan-100", iconColor: "text-cyan-500", icon: FiActivity },
+    { title: "TOTAL WINNINGS", value: `₹${stats?.totalWinnings || 0}`, subtitle: "Winnings paid to players", subtitleColor: "text-gray-500", headerColor: "bg-green-500", iconBg: "bg-green-100", iconColor: "text-green-500", icon: FiTrendingUp },
+    { title: "ADMIN PROFIT/LOSS", value: `₹${stats?.adminProfitLoss || 0}`, subtitle: "Overall P/L calculation", subtitleColor: "text-gray-500", headerColor: "bg-green-600", iconBg: "bg-green-100", iconColor: "text-green-600", icon: FiDollarSign },
+    { title: "PENDING WITHDRAWALS", value: stats?.pendingWithdrawalsCount || "0", subtitle: "Awaiting Action", subtitleColor: "text-orange-500", headerColor: "bg-orange-500", iconBg: "bg-orange-100", iconColor: "text-orange-500", icon: FiClock },
+    { title: "TOTAL BONUSES GIVEN", value: `₹${stats?.totalBonuses || 0}`, subtitle: "Promotional credits", subtitleColor: "text-gray-500", headerColor: "bg-pink-600", iconBg: "bg-pink-100", iconColor: "text-pink-600", icon: FiGift }
   ];
 
   return (
@@ -54,9 +76,9 @@ export const AdminDashboard = () => {
               <option>This Month</option>
             </select>
 
-            <button className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors border border-blue-100">
-              <FiRefreshCw className="text-blue-500" />
-              <span>Refresh Data</span>
+            <button onClick={fetchData} className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-100 transition-colors border border-blue-100">
+              <FiRefreshCw className={`text-blue-500 ${loading ? 'animate-spin' : ''}`} />
+              <span>{loading ? 'Refreshing...' : 'Refresh Data'}</span>
             </button>
           </div>
         </div>
@@ -147,7 +169,9 @@ export const AdminDashboard = () => {
               {['Total Deposits', 'Total Withdrawals', 'Game Winnings', 'Game Losses'].map((title, i) => (
                 <div key={i} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
                   <h3 className="text-sm font-medium text-gray-500 mb-2">{title}</h3>
-                  <p className={`text-2xl font-bold ${i % 2 === 0 ? 'text-green-500' : 'text-red-500'} mb-1`}>₹0</p>
+                  <p className={`text-2xl font-bold ${i % 2 === 0 ? 'text-green-500' : 'text-red-500'} mb-1`}>
+                    ₹{ i === 0 ? stats?.totalDeposits || 0 : i === 1 ? stats?.totalWithdrawals || 0 : i === 2 ? stats?.totalWinnings || 0 : stats?.adminProfitLoss || 0 }
+                  </p>
                   <p className="text-xs font-medium text-gray-400">0 transactions</p>
                 </div>
               ))}
@@ -183,9 +207,36 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Empty State / Body */}
-          <div className="flex-1 flex items-center justify-center">
-            <p className="text-gray-500 text-base">No users found matching your search criteria</p>
+          {/* Content Body */}
+          <div className="flex-1 overflow-x-auto mt-4">
+            {users.length === 0 && !loading ? (
+              <div className="flex items-center justify-center p-12">
+                <p className="text-gray-500 text-base">No users found matching your search criteria</p>
+              </div>
+            ) : (
+              <table className="w-full text-left text-sm text-gray-600">
+                <thead className="bg-gray-50 border-b border-gray-100 text-gray-700">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Name</th>
+                    <th className="px-4 py-3 font-semibold">Mobile</th>
+                    <th className="px-4 py-3 font-semibold">Wallet</th>
+                    <th className="px-4 py-3 font-semibold">Role</th>
+                    <th className="px-4 py-3 font-semibold">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {users.map(u => (
+                    <tr key={u._id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 font-medium text-gray-800">{u.name}</td>
+                      <td className="px-4 py-3">{u.mobile}</td>
+                      <td className="px-4 py-3 font-bold text-gray-800">₹{u.walletBalance}</td>
+                      <td className="px-4 py-3"><span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">{u.role}</span></td>
+                      <td className="px-4 py-3"><span className={`px-2 py-1 rounded text-xs ${u.status === 'Active' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>{u.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
 
           {/* Footer Pagination */}
@@ -245,9 +296,36 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Empty State / Body */}
-          <div className="flex-1 flex items-center justify-center">
-            <p className="text-gray-500 text-base">No transactions found</p>
+          {/* Content Body */}
+          <div className="flex-1 overflow-x-auto mt-4">
+            {transactions.length === 0 && !loading ? (
+              <div className="flex items-center justify-center p-12">
+                <p className="text-gray-500 text-base">No transactions found</p>
+              </div>
+            ) : (
+              <table className="w-full text-left text-sm text-gray-600">
+                <thead className="bg-gray-50 border-b border-gray-100 text-gray-700">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Type</th>
+                    <th className="px-4 py-3 font-semibold">User</th>
+                    <th className="px-4 py-3 font-semibold">Amount</th>
+                    <th className="px-4 py-3 font-semibold">Method</th>
+                    <th className="px-4 py-3 font-semibold">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {transactions.map(t => (
+                    <tr key={t._id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 font-bold text-gray-800">{t.type}</td>
+                      <td className="px-4 py-3">{t.userId?.name} <span className="text-xs text-gray-400 block">{t.userId?.mobile}</span></td>
+                      <td className="px-4 py-3 font-bold text-gray-800">₹{t.amount}</td>
+                      <td className="px-4 py-3">{t.method}</td>
+                      <td className="px-4 py-3"><span className="px-2 py-1 bg-yellow-50 text-yellow-700 rounded text-xs font-semibold">{t.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
 
           {/* Footer Pagination */}
@@ -288,9 +366,35 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="flex-1 flex items-center justify-center">
-            <p className="text-gray-500 text-base"> No withdrawal requests found</p>
-            
+          <div className="flex-1 overflow-x-auto mt-4">
+            {withdrawals.length === 0 && !loading ? (
+              <div className="flex items-center justify-center p-12">
+                <p className="text-gray-500 text-base"> No withdrawal requests found</p>
+              </div>
+            ) : (
+              <table className="w-full text-left text-sm text-gray-600">
+                <thead className="bg-gray-50 border-b border-gray-100 text-gray-700">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Request ID</th>
+                    <th className="px-4 py-3 font-semibold">User</th>
+                    <th className="px-4 py-3 font-semibold">Account Details</th>
+                    <th className="px-4 py-3 font-semibold">Amount</th>
+                    <th className="px-4 py-3 font-semibold">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-50">
+                  {withdrawals.map(w => (
+                    <tr key={w._id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-red-500 font-bold">{w.transactionId}</td>
+                      <td className="px-4 py-3">{w.userId?.name} <span className="text-xs text-gray-400 block">{w.userId?.mobile}</span></td>
+                      <td className="px-4 py-3">{w.method} <span className="text-xs text-gray-400 block">{w.accountDetails}</span></td>
+                      <td className="px-4 py-3 font-bold text-gray-800">₹{w.amount}</td>
+                      <td className="px-4 py-3"><span className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs font-semibold">{w.status}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
 
           {/* Footer Pagination */}

@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ProtectedRoute, ProtectedRouteAdmin } from "./components/ProtectedRoute"
 import { Sign } from "./pages/Sign"
 import { Login } from "./pages/Login"
-
 import MainLayerOut from "./layerout/MainLayerOut"
 import Profile from "./pages/userDeshbord/Profile"
 import GamerRatesPage from "./pages/userDeshbord/GamerRatesPage"
@@ -16,6 +15,7 @@ import { NoticePage } from "./pages/userDeshbord/NoticePage"
 import { HowTOPlay } from "./pages/userDeshbord/HowTOPlay"
 import GamePlay from "./pages/userDeshbord/GamePlay"
 import DepositPage from "./pages/userDeshbord/DepositPage"
+import WithdrawalPage from "./pages/userDeshbord/WithdrawalPage"
 
 // admin 
 import { AdminLogin } from "./pages/AdminLogin"
@@ -61,6 +61,7 @@ function App() {
                         <Route path="notice" element={<NoticePage />} />
                         <Route path="HowTOPlay" element={<HowTOPlay />} />
                         <Route path="add-funds" element={<DepositPage />} />
+                        <Route path="withdrawal" element={<WithdrawalPage />} />
                     </Route>
                     <Route path="/play/:id" element={<GamePlay />} />
                 </Route>

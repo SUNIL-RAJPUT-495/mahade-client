@@ -1,50 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { FaCalendarAlt, FaRegClock } from "react-icons/fa"; // Calendar aur Time ke icons
-
-// 1. Dummy Data Array (Credit aur Debit dono ka data)
-const transactionsData = [
-  {
-    id: 1,
-    type: "CREDIT",
-    amount: 500,
-    date: "18 Feb 2026",
-    time: "11:25 PM",
-    status: "COMPLETED",
-    description: "Signup Bonus Credit"
-  },
-  {
-    id: 2,
-    type: "DEBIT",
-    amount: 150,
-    date: "19 Feb 2026",
-    time: "02:10 PM",
-    status: "COMPLETED",
-    description: "Played Game - Starline"
-  },
-  {
-    id: 3,
-    type: "CREDIT",
-    amount: 1000,
-    date: "20 Feb 2026",
-    time: "10:00 AM",
-    status: "PENDING",
-    description: "Add Cash to Wallet"
-  },
-  {
-    id: 4,
-    type: "DEBIT",
-    amount: 300,
-    date: "22 Feb 2026",
-    time: "04:45 PM",
-    status: "COMPLETED",
-    description: "Withdrawal Request"
-  }
-];
+import { FaCalendarAlt, FaRegClock } from "react-icons/fa";
+import { Loader2 } from "lucide-react";
+import SummaryApi from '../../common/SummerAPI';
+import Axios from '../../utils/axios';
 
 export const PassbookPage = () => {
   const navigate = useNavigate();
+  const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchPassbook = async () => {
+    try {
+      const response = await Axios({
+        ...SummaryApi.getUserPassbook
+      });
+      if (response.data.success) {
+        setTransactions(response.data.passbook);
+      }
+    } catch (error) {
+      console.error("Failed to fetch passbook:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPassbook();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-10 font-sans">
@@ -68,10 +52,23 @@ export const PassbookPage = () => {
       <div className='max-w-4xl mx-auto px-4 mt-6'>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'>
           
-          {/* 2. Map Function se Data Render karna */}
-          {transactionsData.map((txn) => {
-            // Check kar rahe hain ki Credit hai ya Debit
-            const isCredit = txn.type === "CREDIT";
+          {/* Loader or Empty State */}
+          {loading ? (
+            <div className="col-span-1 sm:col-span-2 flex flex-col items-center justify-center p-10">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin mb-4" />
+              <p className="text-gray-500 font-medium">Loading your transactions...</p>
+            </div>
+          ) : transactions.length === 0 ? (
+            <div className="col-span-1 sm:col-span-2 flex flex-col items-center justify-center p-12 bg-white rounded-xl border border-gray-100 shadow-sm">
+              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                <FaRegClock className="text-3xl text-gray-300" />
+              </div>
+              <h3 className="text-lg font-bold text-gray-800 mb-1">No Transactions Yet</h3>
+              <p className="text-gray-500 text-sm text-center">You haven't made any deposits, withdrawals or played any games yet.</p>
+            </div>
+          ) : (
+            transactions.map((txn) => {
+              const isCredit = txn.type === "CREDIT";
 
             return (
               <div 
@@ -121,7 +118,7 @@ export const PassbookPage = () => {
 
               </div>
             );
-          })}
+          }))}
 
         </div>
       </div>

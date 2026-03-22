@@ -7,7 +7,6 @@ export const fetchGame = async () => {
         method: SummaryApi.getGame.method
     });
 
-    // Backend `getAllGames` returns: { games: [...] }
     console.log(res?.data?.games);
     return res?.data?.games;
 };

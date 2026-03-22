@@ -55,7 +55,30 @@ const SummaryApi = {
         url: baseURL + "/api/game/declare-result",
         method: "post"
     },
-
+    createWithdrawalRequest: {
+        url: baseURL + "/api/transaction/withdraw",
+        method: "post"
+    },
+    getAllWithdrawals: {
+        url: baseURL + "/api/transaction/all-withdrawals",
+        method: "get"
+    },
+    updateWithdrawalStatus: {
+        url: baseURL + "/api/transaction/update-withdrawal-status",
+        method: "put"
+    },
+    getAllUsers: {
+        url: baseURL + "/api/user/get-all-users",
+        method: "get"
+    },
+    getAdminDashboardStats: {
+        url: baseURL + "/api/user/admin-dashboard-stats",
+        method: "get"
+    },
+    getUserPassbook: {
+        url: baseURL + "/api/user/my-passbook",
+        method: "get"
+    }
 
 }
 export default SummaryApi
