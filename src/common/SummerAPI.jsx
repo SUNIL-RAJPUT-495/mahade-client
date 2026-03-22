@@ -1,35 +1,35 @@
 export const baseURL = "https://matka-backend-xi.vercel.app";
 
 const SummaryApi = {
-    creatUser:{
-        url:baseURL+"/api/user/create-user",
-        method:"post"
-    },  
-    loginUser:{
-        url:baseURL+"/api/user/login-user",
-        method:"post"
+    creatUser: {
+        url: baseURL + "/api/user/create-user",
+        method: "post"
     },
-    getUserProfile:{
-        url:baseURL+"/api/user/get-user-profile",
-        method:"get"
+    loginUser: {
+        url: baseURL + "/api/user/login-user",
+        method: "post"
+    },
+    getUserProfile: {
+        url: baseURL + "/api/user/get-user-profile",
+        method: "get"
     },
     addGame: {
-        url:baseURL+"/api/game/add-game",
-        method :"post"
+        url: baseURL + "/api/game/add-game",
+        method: "post"
 
     },
     getGame: {
         url: baseURL + "/api/game/get-all-games",
         method: "get"
     },
-    placeBid:{
+    placeBid: {
         url: baseURL + "/api/game/place-bid",
-        method:"post"
+        method: "post"
     },
 
-    addMoney:{
+    addMoney: {
         url: baseURL + "/api/transaction/create-deposit-request",
-        method:"post"
+        method: "post"
     },
     pendingDeposits: {
         url: baseURL + "/api/transaction/pending-deposits",

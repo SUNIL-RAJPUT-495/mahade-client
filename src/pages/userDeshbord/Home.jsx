@@ -2,19 +2,26 @@ import React, { useState, useEffect } from 'react';
 import {
   FaWallet, FaWhatsapp, FaStar, FaPlusCircle,
   FaRegClock, FaHome, FaBook, FaHeadset, FaListAlt,
-  FaBars
+  FaBars, FaChartBar, FaTimes
 } from "react-icons/fa";
 import { BiMoney, BiMoneyWithdraw } from 'react-icons/bi';
 import { IoMdNotifications } from "react-icons/io";
+import { BsGraphUp, BsTable } from "react-icons/bs"; // Naye icons chart buttons ke liye
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { fetchGame } from '../../utils/api';
 import { useSelector } from 'react-redux';
+
 const Home = () => {
   const { toggleSidebar } = useOutletContext();
   const navigate = useNavigate();
   const balance = useSelector((state) => state.user.walletBalance);
   const [gamesList, setGamesList] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Modal State
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
+  const [selectedChartGame, setSelectedChartGame] = useState(null);
+
   const loadAllGames = async () => {
     setLoading(true);
     try {
@@ -35,8 +42,30 @@ const Home = () => {
     loadAllGames();
   }, []);
 
+  // Modal handlers
+  const openChartModal = (game) => {
+    setSelectedChartGame(game);
+    setIsChartModalOpen(true);
+  };
+
+  const closeChartModal = () => {
+    setIsChartModalOpen(false);
+    setSelectedChartGame(null);
+  };
+
+  const goToJodiChart = () => {
+    // URL mein game name ya id bhej sakte hain
+    navigate(`/jodi-chart?market=${selectedChartGame?.name}`);
+    closeChartModal();
+  };
+
+  const goToPanelChart = () => {
+    navigate(`/panel-chart?market=${selectedChartGame?.name}`);
+    closeChartModal();
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 pb-24 font-sans">
+    <div className="min-h-screen bg-gray-50 pb-24 font-sans relative">
 
       {/* HEADER SECTION */}
       <div className="bg-mahadev text-white p-4 flex justify-between items-center shadow-lg sticky top-0 z-40">
@@ -116,33 +145,50 @@ const Home = () => {
             {gamesList.map((game) => (
               <div
                 key={game._id}
-                className='bg-white border border-gray-100 shadow-md rounded-2xl p-4 sm:p-5 flex flex-col items-center text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1'
+                className='bg-white shadow-[0_4px_15px_rgba(0,0,0,0.1)] rounded-2xl p-4 flex flex-col transition-all duration-300'
               >
 
-                <div className='border-b border-gray-100 w-full pb-3 mb-3 flex items-center justify-center gap-1.5 sm:gap-2 text-gray-500 font-medium bg-gray-50/50 rounded-t-xl'>
-                  <FaRegClock className="text-sm sm:text-base text-mahadev opacity-70" />
-                  <p className="text-[11px] sm:text-sm tracking-wide">{game.open_time} - {game.close_time}</p>
+                {/* Header: Time & Chart Icon */}
+                <div className='flex justify-between items-center pb-2 border-b border-gray-200 mb-3'>
+                  <span className="text-[10px] sm:text-xs text-gray-500 font-medium">
+                    {game.open_time} - {game.close_time}
+                  </span>
+                  
+                  {/* ✨ CHART ICON BUTTON */}
+                  <button 
+                    onClick={() => openChartModal(game)}
+                    className="p-1.5 hover:bg-purple-50 rounded-full transition-colors active:scale-90"
+                  >
+                    <FaChartBar className="text-mahadev text-sm sm:text-base" />
+                  </button>
                 </div>
 
-                <h2 className='text-sm sm:text-xl font-black text-gray-800 mb-1 tracking-wide'>{game.name}</h2>
-                <p className='text-green-600 font-black text-xl sm:text-3xl tracking-widest mb-1 drop-shadow-sm'>
-                  {game.open_pana || '***'}-{game.jodi_result || '**'}-{game.close_pana || '***'}
+                {/* Game Name */}
+                <h2 className='text-[13px] sm:text-[15px] font-bold text-mahadev uppercase mb-1'>
+                  {game.name}
+                </h2>
+
+                {/* Results Number */}
+                <p className='text-sm sm:text-base font-bold text-black tracking-widest mb-1.5'>
+                  {game.open_pana || '***'}_{game.jodi_result || '**'}_{game.close_pana || '***'}
                 </p>
 
-                <div className={`font-bold mb-4 sm:mb-6 tracking-wide text-xs sm:text-sm ${game.status !== 'Active' ? 'text-red-500' : 'text-green-500'}`}>
-                  {game.status === 'Active' ? 'Market Running' : 'Market Closed'}
+                {/* Status Indicator */}
+                <div className={`font-medium mb-4 text-[11px] sm:text-xs ${game.status !== 'Active' ? 'text-red-500' : 'text-green-600'}`}>
+                  {game.status === 'Active' ? 'Market is Running' : 'Market Closed'}
                 </div>
 
-                {/* ✨ PLAY NOW BUTTON (Updated for Dynamic URL) */}
+                {/* Play Now Button */}
                 <button
                   onClick={() => navigate(`/play/${game._id}`, { state: { game: game } })}
-                  className={`w-full rounded-xl py-2.5 sm:py-3 font-extrabold uppercase tracking-wider text-xs sm:text-sm transition-all shadow-sm ${game.status !== 'Active'
-                      ? 'bg-gray-100 hover:bg-gray-200 text-gray-500 cursor-not-allowed'
-                      : 'bg-white border-2 border-mahadev text-mahadev hover:bg-mahadev hover:text-white hover:shadow-md active:scale-95'
-                    }`}
+                  className={`w-full rounded-xl py-2 sm:py-2.5 font-bold text-xs sm:text-sm transition-all ${
+                    game.status !== 'Active'
+                      ? 'bg-gray-100 border border-gray-300 text-gray-400 cursor-not-allowed'
+                      : 'bg-white border-2 border-mahadev text-mahadev hover:bg-mahadev hover:text-white'
+                  }`}
                   disabled={game.status !== 'Active'}
                 >
-                  {game.status !== 'Active' ? 'Closed Game' : 'Play Now'}
+                  {game.status !== 'Active' ? 'Closed' : 'Play Now'}
                 </button>
 
               </div>
@@ -189,6 +235,57 @@ const Home = () => {
 
         </ul>
       </footer>
+
+      {/* ✨ CHART MODAL OVERLAY ✨ */}
+      {isChartModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl relative pt-10 pb-6 px-6 overflow-visible">
+            
+            {/* Close Cross Button (Top Right Absolute) */}
+            <button 
+              onClick={closeChartModal}
+              className="absolute -top-3 -right-3 bg-red-500 text-white p-2 rounded-full border-2 border-white shadow-md hover:bg-red-600 transition-colors z-10"
+            >
+              <FaTimes className="text-sm" />
+            </button>
+
+            {/* Modal Title (Game Name) */}
+            <h2 className="text-center text-xl font-black text-[#210c2e] mb-6 tracking-wide uppercase">
+              {selectedChartGame?.name}
+            </h2>
+
+            {/* Buttons Container */}
+            <div className="flex flex-col gap-4">
+              {/* Jodi Chart Button */}
+              <button 
+                onClick={goToJodiChart}
+                className="w-full bg-[#380e4b] hover:bg-[#210c2e] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-3 transition-colors active:scale-95 text-base shadow-sm"
+              >
+                <BsGraphUp className="text-xl font-bold" />
+                Jodi Chart
+              </button>
+
+              {/* Panel Chart Button */}
+              <button 
+                onClick={goToPanelChart}
+                className="w-full bg-[#380e4b] hover:bg-[#210c2e] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-3 transition-colors active:scale-95 text-base shadow-sm"
+              >
+                <BsTable className="text-xl font-bold" />
+                Panel Chart
+              </button>
+
+              {/* Red Close Button */}
+              <button 
+                onClick={closeChartModal}
+                className="w-full bg-[#df3937] hover:bg-red-700 text-white py-3.5 rounded-xl font-bold mt-2 transition-colors active:scale-95 text-base shadow-sm"
+              >
+                Close
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
 
     </div>
   )

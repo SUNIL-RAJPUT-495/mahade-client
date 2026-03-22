@@ -16,6 +16,8 @@ import { HowTOPlay } from "./pages/userDeshbord/HowTOPlay"
 import GamePlay from "./pages/userDeshbord/GamePlay"
 import DepositPage from "./pages/userDeshbord/DepositPage"
 import WithdrawalPage from "./pages/userDeshbord/WithdrawalPage"
+import JodiChart from "./pages/userDeshbord/JodiChart"
+import PanelChart from "./pages/userDeshbord/PanelChart"
 
 // admin 
 import { AdminLogin } from "./pages/AdminLogin"
@@ -62,6 +64,8 @@ function App() {
                         <Route path="HowTOPlay" element={<HowTOPlay />} />
                         <Route path="add-funds" element={<DepositPage />} />
                         <Route path="withdrawal" element={<WithdrawalPage />} />
+                        <Route path="jodi-chart" element={<JodiChart />} />
+                        <Route path="panel-chart" element={<PanelChart />} />
                     </Route>
                     <Route path="/play/:id" element={<GamePlay />} />
                 </Route>
