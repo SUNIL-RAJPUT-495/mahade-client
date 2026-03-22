@@ -1,4 +1,4 @@
-export const baseURL = "http://localhost:5000";
+export const baseURL = "https://matka-backend-xi.vercel.app";
 
 const SummaryApi = {
     creatUser:{
