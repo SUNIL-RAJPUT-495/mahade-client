@@ -66,8 +66,9 @@ function App() {
                         <Route path="withdrawal" element={<WithdrawalPage />} />
                         <Route path="jodi-chart" element={<JodiChart />} />
                         <Route path="panel-chart" element={<PanelChart />} />
+                        <Route path="/play/:id" element={<GamePlay />} />
                     </Route>
-                    <Route path="/play/:id" element={<GamePlay />} />
+
                 </Route>
                 <Route element={<ProtectedRouteAdmin />}>
                     <Route path="/admin" element={<AdminLayout />}>
