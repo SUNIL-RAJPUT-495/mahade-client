@@ -39,7 +39,7 @@ const GamePlay = () => {
     );
   }
 
-  // --- MATKA GAME CONFIGURATION (UPDATED FOR NEW GAMES) ---
+  // --- MATKA GAME CONFIGURATION ---
   const getGameConfig = (type) => {
     switch(type) {
       case 'Single': 
@@ -59,9 +59,9 @@ const GamePlay = () => {
         return { maxLength: 3, placeholder: 'e.g., 146' };
       case 'SPMotor':
       case 'DPMotor':
-        return { maxLength: 4, placeholder: 'e.g., 1234' }; // Motor games accept 4 digits
+        return { maxLength: 4, placeholder: 'e.g., 1234' }; 
       default: 
-        return { maxLength: 10, placeholder: 'Enter number' }; // Bulk fallback
+        return { maxLength: 10, placeholder: 'Enter number' }; 
     }
   };
 
@@ -106,29 +106,30 @@ const GamePlay = () => {
     setBetNumber(positiveValue);
   };
 
-  // --- STRICT VALIDATION FOR MATKA RULES (UPDATED) ---
   const validateMatkaRules = () => {
-    // Allows flexible lengths for games like Bulk, Motor, and Common
     const isFlexibleLength = gameType.includes('Bulk') || gameType.includes('Motor') || gameType.includes('COMMON');
 
-    if (!isFlexibleLength && betNumber.length !== maxLength) {
+    // Skip strict length validation for OddEven since value is "Odd" or "Even" string
+    if (gameType !== 'OddEven' && !isFlexibleLength && betNumber.length !== maxLength) {
       alert(`Please enter exactly ${maxLength} digits for ${gameType}.`);
       return false;
     }
 
-    const uniqueDigits = new Set(betNumber.split(''));
+    if (gameType !== 'OddEven') {
+      const uniqueDigits = new Set(betNumber.split(''));
 
-    if (gameType === 'Single Panna' && uniqueDigits.size !== 3) {
-      alert("For Single Panna, all 3 digits must be different (e.g., 146).");
-      return false;
-    }
-    if (gameType === 'Double Panna' && uniqueDigits.size !== 2) {
-      alert("For Double Panna, exactly 2 digits must be the same (e.g., 112).");
-      return false;
-    }
-    if (gameType === 'Triple Panna' && uniqueDigits.size !== 1) {
-      alert("For Triple Panna, all 3 digits must be identical (e.g., 777).");
-      return false;
+      if (gameType === 'Single Panna' && uniqueDigits.size !== 3) {
+        alert("For Single Panna, all 3 digits must be different (e.g., 146).");
+        return false;
+      }
+      if (gameType === 'Double Panna' && uniqueDigits.size !== 2) {
+        alert("For Double Panna, exactly 2 digits must be the same (e.g., 112).");
+        return false;
+      }
+      if (gameType === 'Triple Panna' && uniqueDigits.size !== 1) {
+        alert("For Triple Panna, all 3 digits must be identical (e.g., 777).");
+        return false;
+      }
     }
 
     return true;
@@ -217,6 +218,7 @@ const GamePlay = () => {
                 key={option.id}
                 onClick={() => {
                   setGameType(option.id);
+                  setBetNumber(''); // Clear bet number when switching games
                   setStep(2); 
                 }}
                 className="bg-mahadev rounded-xl flex flex-col items-center justify-center p-6 lg:p-8 text-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-white/10 active:scale-95"
@@ -266,19 +268,65 @@ const GamePlay = () => {
                 </div>
               )}
 
-              {/* NUMBER INPUT */}
+              {/* DYNAMIC NUMBER INPUT */}
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Enter Number</label>
-                <input
-                  type="text" 
-                  inputMode="numeric"
-                  value={betNumber}
-                  maxLength={gameType.includes('Bulk') || gameType.includes('Motor') || gameType.includes('COMMON') ? 10 : maxLength}
-                  onKeyDown={blockInvalidChar}
-                  onChange={handleBetNumberChange}
-                  placeholder={placeholder}
-                  className="w-full text-2xl font-black text-center border-2 border-gray-200 rounded-xl py-4 outline-none focus:border-mahadev focus:ring-4 focus:ring-purple-100 transition-all placeholder:text-gray-300 placeholder:font-normal bg-gray-50 focus:bg-white"
-                />
+                <label className="block text-sm font-bold text-gray-700 mb-2">
+                  {gameType === 'OddEven' ? 'Select Odd or Even' : 'Enter Number'}
+                </label>
+                
+                {gameType === 'OddEven' ? (
+                  /* ODD / EVEN UI: Two big toggle buttons */
+                  <div className="flex gap-4">
+                    <label className="flex-1 cursor-pointer">
+                      <input 
+                        type="radio" 
+                        name="oddEvenBet" 
+                        className="peer sr-only"
+                        checked={betNumber === 'Odd'} 
+                        onChange={() => setBetNumber('Odd')}
+                      />
+                      <div className="text-center py-4 rounded-xl border-2 font-black text-xl peer-checked:border-mahadev peer-checked:bg-purple-50 peer-checked:text-mahadev text-gray-400 border-gray-200 transition-all hover:bg-gray-50 flex flex-col items-center justify-center">
+                        ODD
+                        <span className="text-xs font-semibold text-gray-400 peer-checked:text-mahadev/70 mt-1">(1,3,5,7,9)</span>
+                      </div>
+                    </label>
+                    <label className="flex-1 cursor-pointer">
+                      <input 
+                        type="radio" 
+                        name="oddEvenBet" 
+                        className="peer sr-only"
+                        checked={betNumber === 'Even'} 
+                        onChange={() => setBetNumber('Even')}
+                      />
+                      <div className="text-center py-4 rounded-xl border-2 font-black text-xl peer-checked:border-mahadev peer-checked:bg-purple-50 peer-checked:text-mahadev text-gray-400 border-gray-200 transition-all hover:bg-gray-50 flex flex-col items-center justify-center">
+                        EVEN
+                        <span className="text-xs font-semibold text-gray-400 peer-checked:text-mahadev/70 mt-1">(0,2,4,6,8)</span>
+                      </div>
+                    </label>
+                  </div>
+                ) : (
+                  /* STANDARD MATKA NUMBER UI */
+                  <>
+                    <input
+                      type="text" 
+                      inputMode="numeric"
+                      value={betNumber}
+                      maxLength={
+                        gameType.includes('Bulk') || gameType.includes('Motor') || gameType.includes('COMMON') ? 10 : maxLength
+                      }
+                      onKeyDown={blockInvalidChar}
+                      onChange={handleBetNumberChange}
+                      placeholder={placeholder}
+                      className="w-full text-2xl font-black text-center border-2 border-gray-200 rounded-xl py-4 outline-none focus:border-mahadev focus:ring-4 focus:ring-purple-100 transition-all placeholder:text-gray-300 placeholder:font-normal placeholder:tracking-normal tracking-[0.2em] bg-gray-50 focus:bg-white"
+                    />
+                    {/* Helper Text for Motor Games */}
+                    {(gameType.includes('Motor') || gameType.includes('Bulk')) && (
+                      <p className="text-xs text-gray-500 mt-2 text-center font-semibold">
+                        Combinations will be generated automatically.
+                      </p>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* AMOUNT INPUT */}

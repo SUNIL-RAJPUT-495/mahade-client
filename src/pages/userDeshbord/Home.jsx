@@ -21,7 +21,6 @@ const Home = () => {
   // Modal State
   const [isChartModalOpen, setIsChartModalOpen] = useState(false);
   const [selectedChartGame, setSelectedChartGame] = useState(null);
-
   const loadAllGames = async () => {
     setLoading(true);
     try {
@@ -31,6 +30,7 @@ const Home = () => {
       } else if (Array.isArray(response)) {
         setGamesList(response);
       }
+      console.log(gamesList)
     } catch (error) {
       console.error("Error fetching games:", error);
     } finally {
@@ -93,12 +93,12 @@ const Home = () => {
         <div className='flex justify-between gap-3 sm:gap-4'>
           {/* WhatsApp Button */}
           <button 
-            onClick={() => window.open('https://wa.me/919876543210', '_blank')}
-            className="flex-1 bg-mahadev flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
-          >
-            <FaWhatsapp className="text-green-400 text-2xl" />
-            <span className="font-bold tracking-wide text-sm sm:text-base">WhatsApp</span>
-          </button>
+  onClick={() => navigate('/ChatSupport')}
+  className="flex-1 bg-mahadev flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+>
+  <FaHeadset className="text-blue-300 text-2xl" /> 
+  <span className="font-bold tracking-wide text-sm sm:text-base">Chat Support</span>
+</button>
           {/* Starline Button */}
           <button 
             onClick={() => navigate('/starline')}

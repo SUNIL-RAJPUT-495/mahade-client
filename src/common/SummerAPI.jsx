@@ -78,6 +78,27 @@ const SummaryApi = {
     getUserPassbook: {
         url: baseURL + "/api/user/my-passbook",
         method: "get"
+    },
+    // Chat Support APIs
+    getChatUsers: {
+        url: baseURL + "/api/chat/get-users",
+        method: "get"
+    },
+    getChatHistory: {
+        url: baseURL + "/api/chat/getUserChatHistory",
+        method: "get"
+    },
+    sendMessage: {
+        url: baseURL + "/api/chat/send",
+        method: "post"
+    },
+    getUnreadCount: {
+        url: baseURL + "/api/chat/unread-count",
+        method: "get"
+    },
+    markAsRead: {
+        url: baseURL + "/api/chat/mark-read",
+        method: "post"
     }
 
 }

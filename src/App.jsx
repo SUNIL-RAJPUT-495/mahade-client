@@ -18,6 +18,7 @@ import DepositPage from "./pages/userDeshbord/DepositPage"
 import WithdrawalPage from "./pages/userDeshbord/WithdrawalPage"
 import JodiChart from "./pages/userDeshbord/JodiChart"
 import PanelChart from "./pages/userDeshbord/PanelChart"
+import ChatSupport from "./pages/userDeshbord/ChatSupport"
 
 // admin 
 import { AdminLogin } from "./pages/AdminLogin"
@@ -37,6 +38,7 @@ import { DepositRequestsManagement } from "./pages/adminDashbord/DepositRequests
 import { GameRatesManagement } from "./pages/adminDashbord/GameRatesManagement"
 import { GameResultAdminPanel } from "./pages/adminDashbord/GameResultAdminPanel"
 import { ContactManagementPage } from "./pages/adminDashbord/ContactManagementPage"
+import AdminChatDashboard from "./pages/adminDashbord/AdminChatDashboard"
 
 function App() {
     return (
@@ -67,6 +69,7 @@ function App() {
                         <Route path="jodi-chart" element={<JodiChart />} />
                         <Route path="panel-chart" element={<PanelChart />} />
                         <Route path="/play/:id" element={<GamePlay />} />
+                        <Route path="ChatSupport" element={<ChatSupport/>}/>
                     </Route>
 
                 </Route>
@@ -87,6 +90,7 @@ function App() {
                         <Route path="Payment" element={<DepositRequestsManagement />} />
                         <Route path="GameRatesAdmin" element={<GameRatesManagement />} />
                         <Route path="ResultDecleare" element={<GameResultAdminPanel />} />
+                        <Route path="admin-chat" element={<AdminChatDashboard/>} />
                     </Route>
                 </Route>
             </Routes>

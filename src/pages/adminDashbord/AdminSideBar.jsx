@@ -9,6 +9,7 @@ import { IoBagHandle } from "react-icons/io5";
 import { MdRoundaboutRight } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { ImNotification } from "react-icons/im";
+import { FaHeadset } from "react-icons/fa";
 
 export const AdminSideBar = ({ closeSidebar }) => {
     const menuSections = [
@@ -37,6 +38,7 @@ export const AdminSideBar = ({ closeSidebar }) => {
                 { icons: IoMdHelp, itemsDetails: "HowToPlay", link: "HowToPlay" },
                 { icons: MdRoundaboutRight, itemsDetails: "Declare Results", link: "ResultDecleare" },
                 { icons: RiLockPasswordFill, itemsDetails: "GameRates", link: "GameRatesAdmin" },
+                { icons: FaHeadset, itemsDetails: "Chat Support", link: "admin-chat" },
             ]
         },
         {
