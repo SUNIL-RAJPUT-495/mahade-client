@@ -1,4 +1,4 @@
-export const baseURL = "https://matka-backend-production.up.railway.app";
+export const baseURL = "https://matka-backend-xi.vercel.app";
 
 const SummaryApi = {
     creatUser: {
