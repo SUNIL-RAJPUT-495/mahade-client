@@ -7,7 +7,7 @@ export const fetchGame = async () => {
         method: SummaryApi.getGame.method
     });
 
-    console.log(res?.data?.games);
-    return res?.data?.games;
+    console.log(res?.data?.data);
+    return res?.data?.data;
 };
 

@@ -30,7 +30,7 @@ export const BidPage = () => {
                 <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6'>
                     
                     {/* Card 1: Bid History */}
-                    <div className='bg-white border-l-4 border-mahadev rounded-xl shadow-sm hover:shadow-md transition-all p-4 flex items-center justify-between cursor-pointer group hover:-translate-y-0.5'>
+                    <div onClick={()=>navigate('/BidHistoryPage')} className='bg-white border-l-4 border-mahadev rounded-xl shadow-sm hover:shadow-md transition-all p-4 flex items-center justify-between cursor-pointer group hover:-translate-y-0.5'>
                         <div className='flex items-center gap-4'>
                             <div className='bg-mahadev p-3 rounded text-white'>
                                 <FaHistory className="text-xl" />

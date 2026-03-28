@@ -39,6 +39,7 @@ import { GameRatesManagement } from "./pages/adminDashbord/GameRatesManagement"
 import { GameResultAdminPanel } from "./pages/adminDashbord/GameResultAdminPanel"
 import { ContactManagementPage } from "./pages/adminDashbord/ContactManagementPage"
 import AdminChatDashboard from "./pages/adminDashbord/AdminChatDashboard"
+import BidHistoryPage from "./pages/userDeshbord/BidHistoryPage"
 
 function App() {
     return (
@@ -70,6 +71,7 @@ function App() {
                         <Route path="panel-chart" element={<PanelChart />} />
                         <Route path="/play/:id" element={<GamePlay />} />
                         <Route path="ChatSupport" element={<ChatSupport/>}/>
+                        <Route path="BidHistoryPage" element={<BidHistoryPage/>}/>
                     </Route>
 
                 </Route>

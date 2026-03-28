@@ -143,7 +143,7 @@ const Home = () => {
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {gamesList.map((game) => (
-              <div
+              <div  onClick={() => navigate(`/play/${game._id}`, { state: { game: game } })}
                 key={game._id}
                 className='bg-white shadow-[0_4px_15px_rgba(0,0,0,0.1)] rounded-2xl p-4 flex flex-col transition-all duration-300'
               >
@@ -180,7 +180,7 @@ const Home = () => {
 
                 {/* Play Now Button */}
                 <button
-                  onClick={() => navigate(`/play/${game._id}`, { state: { game: game } })}
+                
                   className={`w-full rounded-xl py-2 sm:py-2.5 font-bold text-xs sm:text-sm transition-all ${
                     game.status !== 'Active'
                       ? 'bg-gray-100 border border-gray-300 text-gray-400 cursor-not-allowed'

@@ -1,4 +1,4 @@
-export const baseURL = "https://matka-backend-xi.vercel.app";
+export const baseURL = "https://matka-backend-production.up.railway.app";
 
 const SummaryApi = {
     creatUser: {
@@ -14,16 +14,16 @@ const SummaryApi = {
         method: "get"
     },
     addGame: {
-        url: baseURL + "/api/game/add-game",
+        url: baseURL + "/api/market/add-market",
         method: "post"
 
     },
     getGame: {
-        url: baseURL + "/api/game/get-all-games",
+        url: baseURL + "/api/market/get-all-markets",
         method: "get"
     },
     placeBid: {
-        url: baseURL + "/api/game/place-bid",
+        url: baseURL + "/api/bid/place-bid",
         method: "post"
     },
 
@@ -47,12 +47,16 @@ const SummaryApi = {
         url: baseURL + "/api/transaction/update-status",
         method: "post"
     },
+    getUserBids: {
+        url: baseURL + "/api/bid/get-user-bids",
+        method: "get"
+    },
     getAllBids: {
-        url: baseURL + "/api/game/get-all-bids",
+        url: baseURL + "/api/bid/get-all-bids",
         method: "get"
     },
     declareResult: {
-        url: baseURL + "/api/game/declare-result",
+        url: baseURL + "/api/bid/declare-result",
         method: "post"
     },
     createWithdrawalRequest: {
