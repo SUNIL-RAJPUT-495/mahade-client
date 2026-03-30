@@ -56,7 +56,7 @@ const SummaryApi = {
         method: "get"
     },
     declareResult: {
-        url: baseURL + "/api/bid/declare-result",
+        url: baseURL + "/api/market/declare-result",
         method: "post"
     },
     createWithdrawalRequest: {
