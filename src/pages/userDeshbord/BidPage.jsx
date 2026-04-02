@@ -44,7 +44,7 @@ export const BidPage = () => {
                     </div>
 
                     {/* Card 2: Game Result */}
-                    <div className='bg-white border-l-4 border-red-700 rounded-xl shadow-sm hover:shadow-md transition-all p-4 flex items-center justify-between cursor-pointer group hover:-translate-y-0.5'>
+                    <div onClick={()=>navigate("/GameResult")} className='bg-white border-l-4 border-red-700 rounded-xl shadow-sm hover:shadow-md transition-all p-4 flex items-center justify-between cursor-pointer group hover:-translate-y-0.5'>
                         <div className='flex items-center gap-4'>
                             <div className='bg-red-700 p-3 rounded text-white'>
                                 <FaTrophy className="text-xl" />

@@ -103,7 +103,18 @@ const SummaryApi = {
     markAsRead: {
         url: baseURL + "/api/chat/mark-read",
         method: "post"
+    },
+    getAllResults: {
+        url: baseURL + "/api/market/get-all-results",
+        method: "get"
+    },
+    getAllNotifications: {
+        url: baseURL + "/api/notification/get-all-notifications",
+        method: "get"
+    },
+    changePassword: {
+        url: baseURL + "/api/user/change-password",
+        method: "put"
     }
-
 }
 export default SummaryApi

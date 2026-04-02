@@ -28,7 +28,7 @@ export const Sidebar = ({ closeSidebar }) => {
     { icons: FaTelegram, itemsDetails: "Telegram Channel", link: "#" },
     { icons: IoMdHelp, itemsDetails: "Help & Support", link: "#" },
     { icons: MdRoundaboutRight, itemsDetails: "About", link: "about" },
-    { icons: RiLockPasswordFill, itemsDetails: "Change Password", link: "#" },
+    { icons: RiLockPasswordFill, itemsDetails: "Change Password", link: "ChangePassword" },
     { icons: FaYoutube, itemsDetails: "How To Play", link: "HowTOPlay" },
     { icons: ImNotification, itemsDetails: "Notice/Rules", link: "notice" },
     { icons: FaShareAlt, itemsDetails: "Refer & Earn", link: "refer" },

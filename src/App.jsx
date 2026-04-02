@@ -19,6 +19,13 @@ import WithdrawalPage from "./pages/userDeshbord/WithdrawalPage"
 import JodiChart from "./pages/userDeshbord/JodiChart"
 import PanelChart from "./pages/userDeshbord/PanelChart"
 import ChatSupport from "./pages/userDeshbord/ChatSupport"
+import GameResultsPage from "./pages/userDeshbord/GameResultsPage"
+import NotificationsPage from "./pages/userDeshbord/NotificationsPage"
+import RajanMarketsPage from "./pages/userDeshbord/RajanMarketsPage"
+import ChangePassword from "./pages/userDeshbord/ChangePassword"
+
+
+
 
 // admin 
 import { AdminLogin } from "./pages/AdminLogin"
@@ -57,6 +64,7 @@ function App() {
                         <Route path="GamerRatesPage" element={<GamerRatesPage />} />
                         <Route path="history" element={<BidPage />} />
                         <Route path="BidPage" element={<BidPage />} />
+                        <Route path="GameResult" element={<GameResultsPage />} />
                         <Route path="passbook" element={<PassbookPage />} />
                         <Route path="payment" element={<PaymentPage />} />
                         <Route path="wallet" element={<PaymentPage />} />
@@ -70,8 +78,12 @@ function App() {
                         <Route path="jodi-chart" element={<JodiChart />} />
                         <Route path="panel-chart" element={<PanelChart />} />
                         <Route path="/play/:id" element={<GamePlay />} />
-                        <Route path="ChatSupport" element={<ChatSupport/>}/>
-                        <Route path="BidHistoryPage" element={<BidHistoryPage/>}/>
+                        <Route path="ChatSupport" element={<ChatSupport />} />
+                        <Route path="BidHistoryPage" element={<BidHistoryPage />} />
+                        <Route path="NotificationsPage" element={<NotificationsPage />} />
+                        <Route path="RajanMarketsPage" element={<RajanMarketsPage />} />
+                        <Route path="ChangePassword" element={<ChangePassword />} />
+
                     </Route>
 
                 </Route>
@@ -92,7 +104,7 @@ function App() {
                         <Route path="Payment" element={<DepositRequestsManagement />} />
                         <Route path="GameRatesAdmin" element={<GameRatesManagement />} />
                         <Route path="ResultDecleare" element={<GameResultAdminPanel />} />
-                        <Route path="admin-chat" element={<AdminChatDashboard/>} />
+                        <Route path="admin-chat" element={<AdminChatDashboard />} />
                     </Route>
                 </Route>
             </Routes>

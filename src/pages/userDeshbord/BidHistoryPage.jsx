@@ -24,6 +24,8 @@ const BidHistoryPage = () => {
   useEffect(() => {
     featchBidHistory();
   }, []);
+
+  console.log(bids);
   const formatDate = (dateString) => {
     const options = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleDateString('en-US', options);
@@ -47,6 +49,7 @@ const BidHistoryPage = () => {
           <thead>
             <tr className="bg-gray-50 text-gray-600 text-sm uppercase tracking-wider">
               <th className="p-4 border-b">Bidder</th>
+               <th className="p-4 border-b">Game Type</th>
               <th className="p-4 border-b">Bid Amount</th>
               <th className="p-4 border-b">Date & Time</th>
               <th className="p-4 border-b">Status</th>
@@ -60,6 +63,9 @@ const BidHistoryPage = () => {
                     {(bid.game_type || bid.market_id?.name || 'G').charAt(0)}
                   </div>
                   <span className="font-medium text-gray-800">{bid.market_id?.name || bid.game_type}</span>
+                </td>
+                <td className="p-4 border-b font-semibold text-gray-800">
+                  {bid.game_type}
                 </td>
                 <td className="p-4 border-b font-semibold text-gray-800">
                   ₹{bid.amount}

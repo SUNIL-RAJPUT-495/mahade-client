@@ -84,7 +84,9 @@ const Home = () => {
             <FaWallet className="text-yellow-300 text-lg" />
             <span className="font-bold">₹ {balance}</span>
           </div>
-          <IoMdNotifications className="text-2xl cursor-pointer hover:scale-110 transition-transform" />
+          <span onClick={()=>navigate('/NotificationsPage')}>
+            <IoMdNotifications className="text-2xl cursor-pointer hover:scale-110 transition-transform" />
+          </span>
         </div>
       </div>
 
@@ -101,7 +103,7 @@ const Home = () => {
 </button>
           {/* Starline Button */}
           <button 
-            onClick={() => navigate('/starline')}
+            onClick={() => navigate('/RajanMarketsPage')}
             className="flex-1 bg-mahadev flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
           >
             <FaStar className="text-yellow-400 text-xl" />
