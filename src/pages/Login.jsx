@@ -6,9 +6,12 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from '../utils/axios'; 
 import SummaryApi from '../common/SummerAPI';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../store/userSlice';
 
 export const Login = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const [formData, setFormData] = useState({
         mobile: '',
@@ -45,6 +48,7 @@ export const Login = () => {
                 localStorage.setItem('access_token', res.data.token);
                 
                 localStorage.setItem('user_data', JSON.stringify(res.data.user)); 
+                dispatch(setUser(res.data.user));
 
                 alert("Login Successful!");
                 navigate('/'); 

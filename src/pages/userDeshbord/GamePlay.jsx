@@ -51,7 +51,7 @@ const GamePlay = () => {
   const [gridBids, setGridBids] = useState({});
   const singlePannaGroups = useMemo(() => generateSinglePannas(), []);
 
-  const balance = useSelector((state) => state.user.walletBalance);
+  const balance = useSelector((state) => state.user.wallet?.realBalance ?? 0);
 
   if (!id) {
     return (

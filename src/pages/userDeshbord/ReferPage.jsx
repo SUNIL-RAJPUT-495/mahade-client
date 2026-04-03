@@ -1,22 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { FaCopy, FaShareAlt, FaGift } from "react-icons/fa"; // Relevant Icons
+import { FaCopy, FaShareAlt, FaGift } from "react-icons/fa";
+import SummaryApi from '../../common/SummerAPI';
+import Axios from '../../utils/axios';
 
 export const ReferPage = () => {
     const navigate = useNavigate();
-    const [referralCode] = useState("SHU9292");
+
+    const [referralCode, setReferralCode] = useState("LOADING...");
     const [copied, setCopied] = useState(false);
 
-    // Copy to clipboard function
+    const featchReferralCode = async () => {
+        try {
+            const response = await Axios({
+                url: SummaryApi.getUserProfile.url,
+                method: SummaryApi.getUserProfile.method,
+            });
+
+            const code = response.data?.user?.referralCode || response.data?.referralCode;
+
+            if (code) {
+                setReferralCode(code);
+            } else {
+                setReferralCode("NOT FOUND");
+            }
+
+        } catch (error) {
+            console.error("Error fetching referral code:", error);
+            setReferralCode("ERROR");
+        }
+    }
+    useEffect(() => {
+        featchReferralCode();
+    }, []);
     const handleCopy = () => {
+        if (referralCode === "LOADING..." || referralCode === "LOGIN REQUIRED" || referralCode === "ERROR") return;
+
         navigator.clipboard.writeText(referralCode);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // 2 sec baad wapas normal
+        setTimeout(() => setCopied(false), 2000);
     };
 
-    // Native Share Function
     const handleShare = async () => {
+        if (referralCode === "LOADING..." || referralCode === "LOGIN REQUIRED" || referralCode === "ERROR") {
+            return alert("Please wait, referral code is loading or not available.");
+        }
+
         const shareData = {
             title: 'Mahadev Matka',
             text: `Join Mahadev Matka using my referral code: ${referralCode}`,
@@ -49,7 +79,7 @@ export const ReferPage = () => {
             {/* Main Content Area */}
             <div className='max-w-md mx-auto px-4 mt-10'>
                 <div className='bg-white rounded-3xl shadow-xl p-8 flex flex-col items-center text-center border border-gray-100'>
-                    
+
                     {/* Top Icon Area */}
                     <div className='bg-mahadev/10 p-5 rounded-full mb-4'>
                         <FaGift className='text-mahadev text-5xl' />
@@ -64,15 +94,16 @@ export const ReferPage = () => {
                     <div className='w-full mb-6'>
                         <p className='text-xs font-bold text-gray-400 uppercase tracking-widest mb-2'>Your Referral Code</p>
                         <div className='flex items-center bg-gray-100 rounded-2xl p-2 border-2 border-dashed border-mahadev/30'>
-                            <input 
-                                type="text" 
-                                readOnly 
-                                value={referralCode} 
-                                className='bg-transparent flex-1 text-center font-black text-2xl text-mahadev outline-none'
+                            <input
+                                type="text"
+                                readOnly
+                                value={referralCode}
+                                className={`bg-transparent flex-1 text-center font-black text-2xl outline-none ${referralCode.length > 10 ? 'text-lg text-gray-500' : 'text-mahadev'}`}
                             />
-                            <button 
+                            <button
                                 onClick={handleCopy}
-                                className='bg-mahadev text-white p-3 rounded-xl hover:bg-opacity-90 transition active:scale-95'
+                                className='bg-mahadev text-white p-3 rounded-xl hover:bg-opacity-90 transition active:scale-95 disabled:opacity-50'
+                                disabled={referralCode === "LOADING..." || referralCode === "LOGIN REQUIRED"}
                             >
                                 <FaCopy size={18} />
                             </button>
@@ -82,9 +113,10 @@ export const ReferPage = () => {
 
                     {/* Action Buttons */}
                     <div className='w-full space-y-3'>
-                        <button 
+                        <button
                             onClick={handleShare}
-                            className='w-full bg-mahadev text-white font-bold py-4 rounded-2xl shadow-lg shadow-mahadev/20 flex items-center justify-center gap-3 hover:opacity-95 transition active:scale-95'
+                            className='w-full bg-mahadev text-white font-bold py-4 rounded-2xl shadow-lg shadow-mahadev/20 flex items-center justify-center gap-3 hover:opacity-95 transition active:scale-95 disabled:opacity-50'
+                            disabled={referralCode === "LOADING..." || referralCode === "LOGIN REQUIRED"}
                         >
                             <FaShareAlt /> Share Via Link
                         </button>
@@ -98,7 +130,7 @@ export const ReferPage = () => {
                     <div className='space-y-4'>
                         <div className='flex gap-4'>
                             <div className='bg-white shadow h-8 w-8 rounded-full flex items-center justify-center font-bold text-mahadev flex-shrink-0'>1</div>
-                            <p className='text-sm text-gray-600 font-medium'>Invite your friends using your code.</p>
+                            <p className='text-sm text-gray-600 font-medium'>Invite your friends using your unique code.</p>
                         </div>
                         <div className='flex gap-4'>
                             <div className='bg-white shadow h-8 w-8 rounded-full flex items-center justify-center font-bold text-mahadev flex-shrink-0'>2</div>

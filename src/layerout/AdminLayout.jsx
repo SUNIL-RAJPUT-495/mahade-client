@@ -2,12 +2,15 @@ import React from 'react'
 import { AdminSideBar } from '../pages/adminDashbord/AdminSideBar'
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { FaBars } from "react-icons/fa"; 
+
 export const AdminLayout = () => {
       const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
     
       const toggleSidebar = () => {
         setIsMobileSidebarOpen(!isMobileSidebarOpen);
       };
+
   return (
    
     <div className='flex h-screen overflow-hidden bg-gray-50 relative'>
@@ -31,8 +34,19 @@ export const AdminLayout = () => {
         <AdminSideBar closeSidebar={() => setIsMobileSidebarOpen(false)} />
       </div>
 
-      {/* 4. MAIN CONTENT */}
-      <main className='flex-1 overflow-y-auto pb-20 md:pb-0'>
+      <main className='flex-1 flex flex-col overflow-y-auto pb-20 md:pb-0'>
+        
+        <div className="md:hidden sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex items-center gap-3">
+            <button 
+                onClick={toggleSidebar} 
+                className="p-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-mahadev"
+            >
+                <FaBars size={20} />
+            </button>
+            <h1 className="text-lg font-black text-gray-800 tracking-tight">ADMIN PANEL</h1>
+        </div>
+
+
         <div className='max-w-7xl mx-auto w-full h-full'>
           <Outlet context={{ toggleSidebar }} />
         </div>

@@ -115,6 +115,38 @@ const SummaryApi = {
     changePassword: {
         url: baseURL + "/api/user/change-password",
         method: "put"
+    },
+    addUpi: {
+        url: baseURL + "/api/upi/add-upi",
+        method: "post"
+    },
+    getAllUpis: {
+        url: baseURL + "/api/upi/all-upi",
+        method: "get"
+    },
+    setActiveUpi: {
+        url: baseURL + "/api/upi/set-active-upi",
+        method: "put"
+    },
+    deleteUpi: {
+        url: baseURL + "/api/upi/delete-upi",
+        method: "delete"
+    },
+    updateUpi: {
+        url: baseURL + "/api/upi/update-upi",
+        method: "put"
+    },
+    getActiveUpi: {
+        url: baseURL + "/api/upi/active-upi",
+        method: "get"
+    },
+    getTransactionSettings: {
+        url: baseURL + "/api/transaction-setting/get-transaction-settings",
+        method: "get"
+    },
+    updateTransactionSettings: {
+        url: baseURL + "/api/transaction-setting/update-transaction-settings",
+        method: "post"
     }
 }
 export default SummaryApi

@@ -14,8 +14,7 @@ const WithdrawalPage = () => {
   const [accountDetails, setAccountDetails] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Fetching wallet balance from Redux store
-  const walletBalance = useSelector((state) => state.user.walletBalance) || 0; 
+  const withdrawable = useSelector((state) => state.user.wallet?.realBalance ?? 0);
 
   const blockInvalidChar = (e) => {
     if (['e', 'E', '+', '-', '.'].includes(e.key)) {
@@ -42,7 +41,7 @@ const WithdrawalPage = () => {
       alert("Please enter your payment details!");
       return;
     }
-    if (amount > walletBalance) {
+    if (Number(amount) > withdrawable) {
       alert("Insufficient wallet balance!");
       return;
     }
@@ -90,9 +89,9 @@ const WithdrawalPage = () => {
         {/* WALLET BALANCE CARD */}
         <div className="bg-gradient-to-r from-[#380e4b] to-[#210c2e] text-white rounded-2xl p-6 mb-6 shadow-lg flex items-center justify-between">
           <div>
-            <p className="text-gray-300 text-sm font-medium mb-1">Available Balance</p>
+            <p className="text-gray-300 text-sm font-medium mb-1">Withdrawable (real balance)</p>
             <h2 className="text-3xl font-black flex items-center gap-1">
-              <FaRupeeSign className="text-xl" /> {walletBalance}
+              <FaRupeeSign className="text-xl" /> {withdrawable}
             </h2>
           </div>
           <MdOutlineAccountBalanceWallet className="text-5xl opacity-80 text-gray-300" />

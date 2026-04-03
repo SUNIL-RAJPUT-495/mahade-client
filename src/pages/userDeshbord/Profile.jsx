@@ -14,8 +14,7 @@ const Profile = () => {
     }, []);
 
     // ✨ Redux Store se User Data aur Balance nikalna
-    const { userData, walletBalance } = useSelector((state) => state.user);
-    console.log(walletBalance);
+    const { userData, walletBalance, wallet } = useSelector((state) => state.user);
     return (
         <div className="min-h-screen bg-gray-50 pb-10">
             {/* Header */}
@@ -56,18 +55,28 @@ const Profile = () => {
                     <h2 className="text-2xl font-bold text-gray-800 capitalize">
                         {userData?.name || "User Name"}
                     </h2>
-                    <p className="text-gray-500 font-medium mb-6">
-                        +91 {userData?.mobile || "0000000000"}
-                    </p>
+                    <div className="mb-6 text-center">
+                        <p className="text-gray-500 font-medium">
+                            +91 {userData?.mobile || "0000000000"}
+                        </p>
+                        {userData?.email && (
+                            <p className="text-gray-400 text-sm mt-1">{userData.email}</p>
+                        )}
+                    </div>
 
                     {/* Detailed Info Box */}
                     <div className='w-full bg-gray-50 rounded-xl border border-gray-200 p-4 flex flex-col gap-4'>
 
-                        {/* Wallet Row (Dynamic Balance) */}
                         <div className='flex justify-between items-center border-b border-gray-200 pb-3'>
-                            <div className="text-gray-600 font-medium">Wallet Balance</div>
+                            <div className="text-gray-600 font-medium">Total Balance</div>
                             <div className="font-bold text-lg text-green-600">
                                 ₹ {walletBalance || 0}
+                            </div>
+                        </div>
+                        <div className='flex justify-between items-center border-b border-gray-200 pb-3'>
+                            <div className="text-gray-600 font-medium">Real / Bonus</div>
+                            <div className="font-semibold text-gray-800 text-sm">
+                                ₹{wallet?.realBalance ?? 0} / ₹{wallet?.bonusBalance ?? 0}
                             </div>
                         </div>
 
@@ -88,6 +97,14 @@ const Profile = () => {
                                 {userData?.referralCode || "N/A"}
                             </div>
                         </div>
+                        {userData?.referredBy ? (
+                            <div className='flex justify-between items-center border-b border-gray-200 pb-3'>
+                                <div className="text-gray-600 font-medium">Referred By</div>
+                                <div className="font-semibold text-gray-700 text-sm">
+                                    {userData.referredBy}
+                                </div>
+                            </div>
+                        ) : null}
 
                         {/* Member Since Row */}
                         <div className='flex justify-between items-center'>

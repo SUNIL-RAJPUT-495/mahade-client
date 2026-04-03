@@ -25,29 +25,31 @@ export const AdminSideBar = ({ closeSidebar }) => {
                 { icons: IoMdSettings, itemsDetails: "Add Game", link: "AddGame" },
                 { icons: MdRoundaboutRight, itemsDetails: "Declare Results", link: "ResultDecleare" },
                 { icons: GiBackwardTime, itemsDetails: "Bids", link: "AdminBid" },
+                { icons: FaHeadset, itemsDetails: "Chat Support", link: "admin-chat" },
+            ]
+        },
+            {
+            heading: "Finance",
+            items: [
+                { icons: FaYoutube, itemsDetails: "Payments", link: "Payment" },
+                { icons: ImNotification, itemsDetails: "Withdrawals", link: "Withdraw" },
             ]
         },
         {
             heading: "Settings",
             items: [
                 { icons: FaCreditCard, itemsDetails: "Upi Setting", link: "upi" },
+                { icons: FaChartPie, itemsDetails: "Bonus Management", link: "bonus" },
                 { icons: TbMoneybag, itemsDetails: "Contact Settings", link: "contact" },
                 { icons: IoBagHandle, itemsDetails: "Admin Referrals", link: "referal" },
-                { icons: FaChartPie, itemsDetails: "Bonus Management", link: "bonus" },
                 { icons: FaLanguage, itemsDetails: "Winners History", link: "WinnersHistory" },
                 { icons: FaTelegram, itemsDetails: "NotificationSender", link: "NotificationSender" },
                 { icons: IoMdHelp, itemsDetails: "HowToPlay", link: "HowToPlay" },
                 { icons: RiLockPasswordFill, itemsDetails: "GameRates", link: "GameRatesAdmin" },
-                { icons: FaHeadset, itemsDetails: "Chat Support", link: "admin-chat" },
+                
             ]
         },
-        {
-            heading: "Finance",
-            items: [
-                { icons: FaYoutube, itemsDetails: "Payments", link: "Payment" },
-                { icons: ImNotification, itemsDetails: "Withdrawals", link: "Withdraw" },
-            ]
-        }
+    
     ];
 
     return (

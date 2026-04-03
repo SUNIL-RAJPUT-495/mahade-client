@@ -36,7 +36,9 @@ export const Sidebar = ({ closeSidebar }) => {
   ];
 
   const balance = useSelector((state) => state.user.walletBalance);
+  const userName = useSelector((state) => state.user.userData?.name);
 
+  
 
   return (
     <div className='h-screen w-64 md:w-72 bg-white flex flex-col border-r border-gray-200 shadow-2xl'>
@@ -46,7 +48,9 @@ export const Sidebar = ({ closeSidebar }) => {
           <div className='p-2 rounded-full mb-2'>
             <IoMdContact size={60} />
           </div>
-          <h2 className='font-bold text-lg tracking-wider mb-1'>USER NAME</h2>
+          <h2 className='font-bold text-lg tracking-wider mb-1 capitalize'>
+            {userName?.trim() || 'User'}
+          </h2>
           <div className='flex justify-center items-center gap-2 px-4 py-1'>
             <FaWallet size={14} />
             <p>Balance: ₹ {balance}</p>

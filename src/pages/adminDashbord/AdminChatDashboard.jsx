@@ -39,7 +39,7 @@ const AdminChatDashboard = () => {
         setUsersList(response.data.data.map(u => ({
           id: u._id || u.conversationId,
           name: u.name || "Unknown",
-          phone: u.email || "",
+          mobile: u.mobile || u.email || "",
           lastMsg: u.lastMessage || "",
           time: u.lastChatTime ? new Date(u.lastChatTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recently",
           unread: 0
@@ -118,7 +118,7 @@ const AdminChatDashboard = () => {
   // Filter users
   const filteredUsers = usersList.filter(user => 
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    user.phone.includes(searchQuery)
+    (user.mobile || "").includes(searchQuery)
   );
 
   return (
@@ -146,7 +146,7 @@ const AdminChatDashboard = () => {
                 </div>
                 <div className="leading-tight">
                   <h2 className="text-lg font-bold text-gray-800">{selectedUser.name}</h2>
-                  <p className="text-xs font-medium text-gray-500">{selectedUser.phone}</p>
+                  <p className="text-xs font-medium text-gray-500">{selectedUser.mobile}</p>
                 </div>
               </div>
               <button className="flex items-center gap-2 text-sm font-bold text-red-600 bg-red-50 px-4 py-2 rounded-xl border border-red-100 hover:bg-red-100 transition-colors">
