@@ -6,12 +6,10 @@ const Axios = axios.create({
     withCredentials: false
 });
 
-// --- Request Interceptor ---
 Axios.interceptors.request.use(
     (config) => {
-        // ✨ YAHAN CHANGE KIYA: access_token check karein jo Login me set kiya tha
-        const token = localStorage.getItem("access_token") || localStorage.getItem("admintoken");
-        
+        const token = localStorage.getItem("access_token") || localStorage.getItem("admin_token");
+
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -24,15 +22,16 @@ Axios.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            // Token expire ho gaya ya galat hai, toh logout karwa do
+
             localStorage.removeItem("access_token");
             localStorage.removeItem("user_data");
-            
+
+            // ✅ Sahi Tariqa (Admin pehle)
+            const token = localStorage.getItem("admin_token") || localStorage.getItem("access_token");
+
             const unauthorizedEvent = new CustomEvent("on-unauthorized");
             window.dispatchEvent(unauthorizedEvent);
-            
-            // Optional: User ko Login pe bhej do
-            // window.location.href = "/Login";
+
         }
         return Promise.reject(error);
     }

@@ -34,7 +34,9 @@ export const Sidebar = ({ closeSidebar }) => {
     { icons: FaShareAlt, itemsDetails: "Refer & Earn", link: "refer" },
     { icons: CiLogin, itemsDetails: "Logout", link: "#" },
   ];
+
   const balance = useSelector((state) => state.user.walletBalance);
+
 
   return (
     <div className='h-screen w-64 md:w-72 bg-white flex flex-col border-r border-gray-200 shadow-2xl'>

@@ -7,7 +7,7 @@ import { RotateCw } from 'lucide-react';
 
 const Profile = () => {
     const navigate = useNavigate();
-    const fetchProfile = useFetchProfile(); // Refresh function
+    const fetchProfile = useFetchProfile(); 
 
     useEffect(() => {
         fetchProfile();
@@ -15,7 +15,7 @@ const Profile = () => {
 
     // ✨ Redux Store se User Data aur Balance nikalna
     const { userData, walletBalance } = useSelector((state) => state.user);
-
+    console.log(walletBalance);
     return (
         <div className="min-h-screen bg-gray-50 pb-10">
             {/* Header */}
