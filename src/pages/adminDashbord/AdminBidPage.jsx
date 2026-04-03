@@ -13,7 +13,7 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import SummaryApi from '../../common/SummerAPI';
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 
 export const AdminBidPage = () => {
   // --- States ---
@@ -33,7 +33,7 @@ export const AdminBidPage = () => {
     setLoading(true);
     setHasError(false);
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.getAllBids.url,
         method: SummaryApi.getAllBids.method,
         headers: {

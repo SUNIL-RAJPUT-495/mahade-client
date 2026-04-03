@@ -14,7 +14,7 @@ import {
   Power,
   Pencil
 } from 'lucide-react';
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 import SummaryApi from '../../common/SummerAPI';
 
 export const UpiSettingsPage = () => {
@@ -41,7 +41,7 @@ export const UpiSettingsPage = () => {
   const fetchUpiList = async () => {
     setFetchingList(true);
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.getAllUpis.url, 
         method: SummaryApi.getAllUpis.method,
       });
@@ -62,7 +62,7 @@ export const UpiSettingsPage = () => {
     if(!window.confirm(`Are you sure you want to ${newStatus ? 'ACTIVATE' : 'DEACTIVATE'} this UPI?`)) return;
 
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: `${SummaryApi.setActiveUpi.url}/${id}`, 
         method: SummaryApi.setActiveUpi.method,
         data: { isActive: newStatus } // Naya status backend ko bhejo
@@ -83,7 +83,7 @@ export const UpiSettingsPage = () => {
     if(!window.confirm("Are you sure you want to delete this UPI?")) return;
     
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: `${SummaryApi.deleteUpi.url}/${id}`, 
         method: SummaryApi.deleteUpi.method || 'DELETE',
       });
@@ -153,7 +153,7 @@ export const UpiSettingsPage = () => {
       const url = editingId ? `${SummaryApi.updateUpi.url}/${editingId}` : SummaryApi.addUpi.url;
       const method = editingId ? SummaryApi.updateUpi.method || 'PUT' : SummaryApi.addUpi.method;
 
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: url,
         method: method,
         data: formData, 

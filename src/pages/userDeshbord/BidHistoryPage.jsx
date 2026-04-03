@@ -49,7 +49,8 @@ const BidHistoryPage = () => {
           <thead>
             <tr className="bg-gray-50 text-gray-600 text-sm uppercase tracking-wider">
               <th className="p-4 border-b">Bidder</th>
-               <th className="p-4 border-b">Game Type</th>
+              <th className="p-4 border-b">Game Type</th>
+              <th className="p-4 border-b">Number</th>
               <th className="p-4 border-b">Bid Amount</th>
               <th className="p-4 border-b">Date & Time</th>
               <th className="p-4 border-b">Status</th>
@@ -66,6 +67,11 @@ const BidHistoryPage = () => {
                 </td>
                 <td className="p-4 border-b font-semibold text-gray-800">
                   {bid.game_type}
+                </td>
+                <td className="p-4 border-b font-mono font-bold text-gray-800 tracking-widest">
+                  {bid.status === 'Winner'
+                    ? '*'.repeat(Math.max(1, String(bid.bet_number || '').length))
+                    : (bid.bet_number ?? '—')}
                 </td>
                 <td className="p-4 border-b font-semibold text-gray-800">
                   ₹{bid.amount}

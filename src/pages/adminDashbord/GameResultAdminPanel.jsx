@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { XCircle, History, Calendar, Gamepad2 } from 'lucide-react';
 import { fetchGame } from '../../utils/api';
 import SummaryApi from '../../common/SummerAPI';
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 
 export const GameResultAdminPanel = () => {
   const [activeTab, setActiveTab] = useState('Calculate Results');
@@ -44,7 +44,7 @@ export const GameResultAdminPanel = () => {
 
   const handleResult = async () => {
     try {
-      const res = await Axios({
+      const res = await AxiosAdmin({
         url: SummaryApi.declareResult.url,
         method: SummaryApi.declareResult.method,
         data: {

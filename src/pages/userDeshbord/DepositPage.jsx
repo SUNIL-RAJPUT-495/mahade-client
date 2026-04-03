@@ -18,9 +18,25 @@ const DepositPage = () => {
   const [adminUpi, setAdminUpi] = useState('Loading...'); 
   const [qrCodeUrl, setQrCodeUrl] = useState(null);
 
-  // Page load hote hi Active UPI mangwayenge
+  const [minDeposit, setMinDeposit] = useState(200);
+
+  // Page load hote hi Active UPI + transaction limits
   useEffect(() => {
     fetchActiveUpi();
+    const loadLimits = async () => {
+      try {
+        const res = await Axios({
+          url: SummaryApi.getTransactionSettings.url,
+          method: SummaryApi.getTransactionSettings.method,
+        });
+        if (res.data?.success && res.data?.data?.minDeposit != null) {
+          setMinDeposit(Number(res.data.data.minDeposit) || 200);
+        }
+      } catch (e) {
+        console.error('Transaction settings:', e);
+      }
+    };
+    loadLimits();
   }, []);
 
   const fetchActiveUpi = async () => {
@@ -60,8 +76,9 @@ const DepositPage = () => {
 
   // Step 1: Proceed button click
   const handleProceed = () => {
-    if (!amount || Number(amount) < 200) {
-      alert("Please enter a valid amount (Minimum ₹200)");
+    const n = Number(amount);
+    if (!amount || n < minDeposit) {
+      alert(`Please enter a valid amount (Minimum ₹${minDeposit})`);
       return;
     }
     // Amount lock kar do aur UPI scanner/UTR input show karo
@@ -156,7 +173,7 @@ const DepositPage = () => {
 
                 <div className="flex justify-between items-center mt-3 px-2">
                   <p className="text-gray-500 text-sm font-bold flex items-center gap-1">
-                    <FaInfoCircle className="text-[#2d0042]" /> Min: ₹200
+                    <FaInfoCircle className="text-[#2d0042]" /> Min: ₹{minDeposit}
                   </p>
                   <p className="text-gray-500 text-sm font-bold">Max: ₹1,00,000</p>
                 </div>

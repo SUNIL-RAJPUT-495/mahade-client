@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaUniversity, FaRupeeSign } from 'react-icons/fa';
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
@@ -13,8 +13,26 @@ const WithdrawalPage = () => {
   const [paymentMethod, setPaymentMethod] = useState('');
   const [accountDetails, setAccountDetails] = useState('');
   const [loading, setLoading] = useState(false);
+  const [minWithdrawal, setMinWithdrawal] = useState(500);
 
   const withdrawable = useSelector((state) => state.user.wallet?.realBalance ?? 0);
+
+  useEffect(() => {
+    const loadLimits = async () => {
+      try {
+        const res = await Axios({
+          url: SummaryApi.getTransactionSettings.url,
+          method: SummaryApi.getTransactionSettings.method,
+        });
+        if (res.data?.success && res.data?.data?.minWithdrawal != null) {
+          setMinWithdrawal(Number(res.data.data.minWithdrawal) || 500);
+        }
+      } catch (e) {
+        console.error('Transaction settings:', e);
+      }
+    };
+    loadLimits();
+  }, []);
 
   const blockInvalidChar = (e) => {
     if (['e', 'E', '+', '-', '.'].includes(e.key)) {
@@ -117,7 +135,7 @@ const WithdrawalPage = () => {
                 className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#380e4b] focus:bg-white transition-all font-bold text-gray-700 placeholder-gray-400"
               />
             </div>
-            <p className="text-xs text-gray-400 mt-2 font-medium">* Minimum withdrawal amount is ₹500</p>
+            <p className="text-xs text-gray-400 mt-2 font-medium">* Minimum withdrawal amount is ₹{minWithdrawal}</p>
           </div>
 
           {/* PAYMENT METHODS */}

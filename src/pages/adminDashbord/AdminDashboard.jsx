@@ -5,7 +5,7 @@ import {
 } from "react-icons/fi";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import SummaryApi from '../../common/SummerAPI';
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 
 export const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -19,16 +19,16 @@ export const AdminDashboard = () => {
     setLoading(true);
     try {
       if (activeTab === 'overview') {
-        const res = await Axios({ url: SummaryApi.getAdminDashboardStats.url, method: SummaryApi.getAdminDashboardStats.method });
+        const res = await AxiosAdmin({ url: SummaryApi.getAdminDashboardStats.url, method: SummaryApi.getAdminDashboardStats.method });
         setStats(res.data.stats);
       } else if (activeTab === 'users') {
-        const res = await Axios({ url: SummaryApi.getAllUsers.url, method: SummaryApi.getAllUsers.method });
+        const res = await AxiosAdmin({ url: SummaryApi.getAllUsers.url, method: SummaryApi.getAllUsers.method });
         setUsers(res.data.users);
       } else if (activeTab === 'transactions') {
-        const res = await Axios({ url: SummaryApi.allTransactions.url, method: SummaryApi.allTransactions.method });
+        const res = await AxiosAdmin({ url: SummaryApi.allTransactions.url, method: SummaryApi.allTransactions.method });
         setTransactions(res.data.transactions);
       } else if (activeTab === 'Withdrawal') {
-        const res = await Axios({ url: SummaryApi.getAllWithdrawals.url, method: SummaryApi.getAllWithdrawals.method });
+        const res = await AxiosAdmin({ url: SummaryApi.getAllWithdrawals.url, method: SummaryApi.getAllWithdrawals.method });
         setWithdrawals(res.data);
       }
     } catch (error) {

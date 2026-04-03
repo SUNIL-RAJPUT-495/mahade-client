@@ -9,7 +9,7 @@ import {
   FaRegCommentDots
 } from "react-icons/fa";
 import SummaryApi from '../../common/SummerAPI';
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 
 const AdminChatDashboard = () => {
   const messagesEndRef = useRef(null);
@@ -31,7 +31,7 @@ const AdminChatDashboard = () => {
   };
   const fetchUsersList = async () => {
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.getChatUsers.url,
         method: SummaryApi.getChatUsers.method,
       });
@@ -66,7 +66,7 @@ const AdminChatDashboard = () => {
     
     // Fetch chat history
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: `${SummaryApi.getChatHistory.url}/${user.id}`,
         method: SummaryApi.getChatHistory.method,
       });
@@ -90,7 +90,7 @@ const AdminChatDashboard = () => {
     if (!inputText.trim() || !selectedUser) return;
 
     try {
-      const res = await Axios({
+      const res = await AxiosAdmin({
         url:SummaryApi.sendMessage.url,
         method:SummaryApi.sendMessage.method,
         data:{

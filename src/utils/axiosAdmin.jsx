@@ -1,14 +1,15 @@
 import axios from "axios";
 import { baseURL } from "../common/SummerAPI";
 
-const Axios = axios.create({
+/** Sirf admin dashboard — hamesha admin_token (user access_token se mix nahi hoga) */
+const AxiosAdmin = axios.create({
     baseURL: baseURL,
     withCredentials: false
 });
 
-Axios.interceptors.request.use(
+AxiosAdmin.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("access_token");
+        const token = localStorage.getItem("admin_token");
 
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -18,16 +19,16 @@ Axios.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-Axios.interceptors.response.use(
+AxiosAdmin.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("user_data");
-            window.dispatchEvent(new CustomEvent("on-unauthorized"));
+            localStorage.removeItem("admin_token");
+            localStorage.removeItem("admin_data");
+            window.dispatchEvent(new CustomEvent("on-unauthorized-admin"));
         }
         return Promise.reject(error);
     }
 );
 
-export default Axios;
+export default AxiosAdmin;

@@ -14,7 +14,7 @@ import {
   XCircle      // Added icon
 } from 'lucide-react';
 import SummaryApi from '../../common/SummerAPI';
-import Axios from "../../utils/axios"
+import AxiosAdmin from "../../utils/axiosAdmin"
 
 export const DepositRequestsManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,7 +31,7 @@ export const DepositRequestsManagement = () => {
     setLoading(true);
     setShowError(false);
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.allTransactions.url,
         method: SummaryApi.allTransactions.method,
         headers: {
@@ -60,7 +60,7 @@ export const DepositRequestsManagement = () => {
     setProcessingId(id);
     try {
       // NOTE: Ensure aapke backend API path update karein agar alag ho
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.updateStatusAdmin.url,
         method: SummaryApi.updateStatusAdmin.method,
         data: {

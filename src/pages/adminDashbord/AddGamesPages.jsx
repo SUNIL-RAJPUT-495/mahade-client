@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IoAdd, IoSettingsOutline, IoListOutline } from "react-icons/io5";
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 import SummaryApi from '../../common/SummerAPI';
 import { fetchGame } from '../../utils/api'; 
 
@@ -70,7 +70,7 @@ export const AddGamesPages = () => {
     const formattedCloseResultTime = `${formatTimeTo12Hour(formData.close_result_time)} ${formData.close_result_period}`;
 
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.addGame.url,
         method: SummaryApi.addGame.method,
         data: {
@@ -105,7 +105,7 @@ export const AddGamesPages = () => {
   const handleToggleStatus = async (gameId, currentStatus) => {
     const newStatus = currentStatus === 'Active' ? 'Closed' : 'Active';
     try {
-      await Axios({
+      await AxiosAdmin({
         url: SummaryApi.updateGameStatus.url, 
         method: SummaryApi.updateGameStatus.method,
         data: { gameId: gameId, status: newStatus }

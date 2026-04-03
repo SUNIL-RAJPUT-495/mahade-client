@@ -11,7 +11,7 @@ import {
   Wallet 
 } from 'lucide-react';
 import SummaryApi from '../../common/SummerAPI';
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 
 export const BonusManagementPage = () => {
   // States
@@ -28,7 +28,7 @@ export const BonusManagementPage = () => {
   
   const fetchSettings = async () => {
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.getTransactionSettings.url,
         method: SummaryApi.getTransactionSettings.method
       });
@@ -56,7 +56,7 @@ export const BonusManagementPage = () => {
   const handalUpdateSettings = async () => {
     setIsLoading(true);
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.updateTransactionSettings.url,
         method: SummaryApi.updateTransactionSettings.method,
         data:{

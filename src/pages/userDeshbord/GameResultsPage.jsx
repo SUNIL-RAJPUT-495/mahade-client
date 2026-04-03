@@ -27,11 +27,20 @@ const GameResultsPage = () => {
           status = 'pending';
         }
 
+        const resultDate = item.date
+          ? new Date(item.date).toLocaleDateString('en-IN', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+            })
+          : '';
+
         return {
           id: item._id,
           name: item.market_id?.name || 'Unknown',
           result: resultString,
-          status: status
+          status: status,
+          resultDate,
         };
       });
 
@@ -47,10 +56,11 @@ const GameResultsPage = () => {
 
 const getCurrentDate = () => {
   const date = new Date();
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  return `${day} / ${month} / ${year}`;
+  return date.toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
 };
 
   return (
@@ -85,15 +95,20 @@ const getCurrentDate = () => {
           return (
             <div
               key={game.id}
-              className="bg-white rounded-xl shadow-sm px-6 py-4 flex justify-between items-center"
+              className="bg-white rounded-xl shadow-sm px-6 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2"
             >
-              <span className="text-gray-800 font-bold text-lg tracking-wide uppercase">
-                {game.name}
-              </span>
+              <div className="flex flex-col gap-0.5">
+                <span className="text-gray-800 font-bold text-lg tracking-wide uppercase">
+                  {game.name}
+                </span>
+                {game.resultDate && (
+                  <span className="text-xs text-gray-500 font-medium">{game.resultDate}</span>
+                )}
+              </div>
 
-              {/* Dynamic Color Pill */}
+              {/* Dynamic Color Pill — har din ka result yahan history ke saath */}
               <div
-                className={`px-6 py-2 rounded-lg border-2 font-bold text-lg tracking-widest ${isPending
+                className={`px-6 py-2 rounded-lg border-2 font-bold text-lg tracking-widest shrink-0 ${isPending
                     ? 'bg-blue-100 border-blue-200 text-[#2b6cb0]' // Blue for pending
                     : 'bg-red-100 border-red-200 text-[#c53030]'   // Red for completed
                   }`}

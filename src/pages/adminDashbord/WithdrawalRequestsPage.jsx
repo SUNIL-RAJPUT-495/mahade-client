@@ -8,7 +8,7 @@ import {
   Loader2 
 } from 'lucide-react';
 import SummaryApi from '../../common/SummerAPI';
-import Axios from '../../utils/axios';
+import AxiosAdmin from '../../utils/axiosAdmin';
 
 export const WithdrawalRequestsPage = () => {
   const [activeFilter, setActiveFilter] = useState('All Requests');
@@ -21,7 +21,7 @@ export const WithdrawalRequestsPage = () => {
     setLoading(true);
     setShowError(false);
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.getAllWithdrawals.url,
         method: SummaryApi.getAllWithdrawals.method
       });
@@ -44,7 +44,7 @@ export const WithdrawalRequestsPage = () => {
 
     setActionLoading(transactionId);
     try {
-      const response = await Axios({
+      const response = await AxiosAdmin({
         url: SummaryApi.updateWithdrawalStatus.url,
         method: SummaryApi.updateWithdrawalStatus.method,
         data: {
