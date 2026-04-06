@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sidebar } from '../pages/userDeshbord/Sidebar';
 import { Outlet } from 'react-router-dom';
+import Footer from '../components/Footer';
 
 const MainLayout = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -37,6 +38,8 @@ const MainLayout = () => {
           <Outlet context={{ toggleSidebar }} />
         </div>
       </main>
+
+      <Footer />
 
     </div>
   );
