@@ -94,25 +94,6 @@ const Home = () => {
       {/* ACTION BUTTONS SECTION */}
       <div className="max-w-3xl mx-auto px-4 pt-6 pb-3 space-y-4 sticky top-[70px] z-30 bg-gray-50 w-full shadow-lg">
         <div className='flex justify-between gap-3 sm:gap-4'>
-          {/* WhatsApp Button */}
-          <button
-            onClick={() => navigate('/ChatSupport')}
-            className="flex-1 bg-mahadev flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
-          >
-            <FaHeadset className="text-blue-300 text-2xl" />
-            <span className="font-bold tracking-wide text-sm sm:text-base">Chat Support</span>
-          </button>
-          {/* Starline Button */}
-          <button
-            onClick={() => navigate('/RajanMarketsPage')}
-            className="flex-1 bg-mahadev flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
-          >
-            <FaStar className="text-yellow-400 text-xl" />
-            <span className="font-bold tracking-wide text-sm sm:text-base">STARLINE</span>
-          </button>
-        </div>
-
-        <div className='flex justify-between gap-3 sm:gap-4'>
           {/* Add Cash Button */}
           <button
             onClick={() => navigate('/add-funds')}
@@ -130,6 +111,26 @@ const Home = () => {
             <span className="font-bold text-sm sm:text-base">Withdraw</span>
           </button>
         </div>
+        <div className='flex justify-between gap-3 sm:gap-4'>
+          {/* WhatsApp Button */}
+          <button
+            onClick={() => navigate('/ChatSupport')}
+            className="flex-1 bg-mahadev flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+          >
+            <FaHeadset className="text-blue-300 text-2xl" />
+            <span className="font-bold tracking-wide text-sm sm:text-base">Chat Support</span>
+          </button>
+          {/* Starline Button */}
+          <button
+            onClick={() => navigate('/HowTOPlay')}
+            className="flex-1 bg-mahadev flex items-center justify-center gap-2 p-3 sm:p-4 text-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
+          >
+            <FaStar className="text-yellow-400 text-xl" />
+            <span className="font-bold tracking-wide text-sm sm:text-base">How to Play</span>
+          </button>
+        </div>
+
+
       </div>
 
       {/* GAMES GRID SECTION */}
@@ -185,8 +186,8 @@ const Home = () => {
                 <button onClick={() => navigate(`/play/${game._id}`, { state: { game: game } })}
 
                   className={`w-full rounded-xl py-2 sm:py-2.5 font-bold text-xs sm:text-sm transition-all ${game.status !== 'Active'
-                      ? 'bg-gray-100 border border-gray-300 text-gray-400 cursor-not-allowed'
-                      : 'bg-white border-2 border-mahadev text-mahadev hover:bg-mahadev hover:text-white'
+                    ? 'bg-gray-100 border border-gray-300 text-gray-400 cursor-not-allowed'
+                    : 'bg-white border-2 border-mahadev text-mahadev hover:bg-mahadev hover:text-white'
                     }`}
                   disabled={game.status !== 'Active'}
                 >
